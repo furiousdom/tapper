@@ -1,0 +1,35 @@
+{
+  "name": "ticketer",
+  "version": "0.1.0",
+  "description": "Web application for product order management.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node ./server/app.js",
+    "dev": "nodemon ./server/app.js",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/furiousdom/ticketer.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/furiousdom/ticketer/issues"
+  },
+  "homepage": "https://github.com/furiousdom/ticketer#readme",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-semistandard": "^15.0.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-require-sort": "^1.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "nodemon": "^2.0.2"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
