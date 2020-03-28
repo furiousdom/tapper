@@ -17,6 +17,14 @@
   "bugs": {
     "url": "https://github.com/furiousdom/ticketer/issues"
   },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "pg": "^7.18.2",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.21.5"
+  },
   "homepage": "https://github.com/furiousdom/ticketer#readme",
   "devDependencies": {
     "eslint": "^6.8.0",
@@ -28,10 +36,5 @@
     "eslint-plugin-require-sort": "^1.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "nodemon": "^2.0.2"
-  },
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1"
   }
 }

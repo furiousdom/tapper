@@ -1,17 +1,17 @@
 const bodyParser = require('body-parser');
+const config = require('./config/config');
 const cors = require('cors');
 const express = require('express');
+const { sequelize } = require('./database/index');
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
 
-app.post('/register', (req, res) => {
-  // console.log(req.body.email, req.body.password);
-  res.send(`hello user: ${req.body.email}`);
-});
+app.use('/users', require('./routes/users'));
 
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, console.log(`Server started on port ${PORT}`));
+sequelize.sync()
+  .then(() => {
+    app.listen(config.PORT, console.log(`Server started on port ${config.PORT}`));
+  });
