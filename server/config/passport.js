@@ -18,6 +18,6 @@ module.exports = passport => {
   passport.use(new LocalStrategy({ usernameField: 'username' }, verifyLocal));
   passport.serializeUser((user, done) => done(null, user.id));
   passport.deserializeUser((id, done) => {
-    return User.findByPk(id, (err, user) => done(err, user));
+    return User.findById(id, (err, user) => done(err, user));
   });
 };

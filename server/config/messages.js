@@ -5,7 +5,8 @@ const msg = {
   wrongPassword: 'Password incorrect.',
   usrExists: 'User already exists.',
   notRegistered: 'User doesn\'t exist',
-  loginFailed: 'An error has occured trying to log in.',
+  loginFailed: 'An error has occured while trying to log in.',
+  loginSuccess: 'Successfully logged in.',
   regComplete: {
     label: 'success_msg',
     text: 'You are now registered and can log in.'

@@ -1,5 +1,6 @@
 const { User } = require('../database');
 const msg = require('../config/messages');
+const passport = require('passport');
 
 function register(req, res) {
   const { errors, body: { name, address, username, email, password, rePassword } } = req;
@@ -22,9 +23,25 @@ function register(req, res) {
     });
 }
 
-function logout(req, res) {
-  req.logout();
-  res.redirect('/users/login');
+function login(req, res, next) {
+  passport.authenticate('local', { session: false }, (err, user, info) => {
+    if (err || !user) {
+      return res.status(400).json({
+        message: info ? info.message : msg.loginFailed,
+        user
+      });
+    }
+    req.login(user, { session: false }, (err) => {
+      if (err) res.send(err);
+      const message = msg.loginSuccess;
+      return res.status(200).json({ user, message });
+    });
+  })(req, res, next);
 }
 
-module.exports = { logout, register };
+function logout(req, res) {
+  req.logout();
+  res.json(msg.logoutComplete);
+}
+
+module.exports = { login, logout, register };

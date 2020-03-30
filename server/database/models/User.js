@@ -1,8 +1,10 @@
-// const bcrypt = require('bcryptjs');
-// const SALT = bcrypt.genSaltSync(10);
+const bcrypt = require('bcryptjs');
 
-module.exports = (sequelize, DataTypes) =>
-  sequelize.define('User', {
+const SALT = bcrypt.genSaltSync(10);
+const encrypt = password => bcrypt.hash(password, SALT);
+
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define('User', {
     email: {
       type: DataTypes.STRING,
       unique: true
@@ -15,15 +17,13 @@ module.exports = (sequelize, DataTypes) =>
     name: DataTypes.STRING,
     address: DataTypes.STRING
   });
-
-// function authenticate(password) {
-//   return bcrypt.compare(password, this.password)
-//     .then(isMatch => isMatch ? this : false);
-// }
-
-// const encrypt = password => bcrypt.hash(password, SALT);
-
-// async function encryptPassword() {
-//   this.password = await encrypt(this.password);
-//   return this.save();
-// }
+  User.prototype.authenticate = function (password) {
+    return bcrypt.compare(password, this.password)
+      .then(isMatch => isMatch ? this : false);
+  };
+  User.prototype.encryptPassword = async function () {
+    this.password = await encrypt(this.password);
+    return this.save();
+  };
+  return User;
+};

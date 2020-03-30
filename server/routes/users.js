@@ -1,18 +1,12 @@
-const { logout, register } = require('../controllers/users.controller');
+const { login, logout, register } = require('../controllers/users.controller');
 const express = require('express');
 const msg = require('../config/messages');
-const passport = require('passport');
 const router = express.Router();
-
-const authenticateOptions = {
-  successRedirect: '/dashboard',
-  failureRedirect: '/users/login'
-};
 
 router.get('/logout', logout);
 
 router.post('/register', errorHandler, register);
-router.post('/login', passport.authenticate('local', authenticateOptions));
+router.post('/login', login);
 
 module.exports = router;
 

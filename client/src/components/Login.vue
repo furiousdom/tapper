@@ -65,6 +65,10 @@ export default {
         this.error = err.response.data.error
         console.log(err)
       }
+      this.navigateTo('/dashboard')
+    },
+    navigateTo (route) {
+      this.$router.push(route)
     }
   }
 }
