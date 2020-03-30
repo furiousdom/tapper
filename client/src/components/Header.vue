@@ -1,36 +1,44 @@
 <template>
-    <v-app-bar
-      app
-      color="white"
-      dark>
-      <!-- TODO: <div class="d-flex align-center">
-        <v-img
-          alt="TapB Logo"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          src="../assets/tapb-logo.svg" />
-      </div>
-      <v-toolbar-title>Ticketer</v-toolbar-title>
-      <v-toolbar-items>
-        <v-btn>
-          My orders
-        </v-btn>
-      </v-toolbar-items> -->
+  <v-app-bar
+    app
+    color="white">
+    <!-- TODO: Implement this
+    <div class="d-flex align-center">
+      <v-img
+        alt="TapB Logo"
+        class="shrink mt-1 hidden-sm-and-down"
+        contain
+        src="../assets/tapb-logo.svg" />
+    </div>-->
 
-      <v-spacer></v-spacer>
+    <span @click="navigateTo('root')">
+      <v-toolbar-title class="mr-4">Ticketer</v-toolbar-title>
+    </span>
 
-      <v-toolbar-items>
-        <v-btn flat dark>
-          <router-link to="register">
-            SIGN UP
-          </router-link>
-        </v-btn>
-      </v-toolbar-items>
-    </v-app-bar>
+    <v-spacer></v-spacer>
+
+    <v-toolbar-items>
+      <v-btn>
+        <router-link to="login">
+          LOG IN
+        </router-link>
+      </v-btn>
+      <v-btn>
+        <router-link to="register">
+          SIGN UP
+        </router-link>
+      </v-btn>
+    </v-toolbar-items>
+  </v-app-bar>
 </template>
 
 <script>
 export default {
+  methods: {
+    navigateTo (route) {
+      this.$router.push(route)
+    }
+  }
 }
 </script>
 
