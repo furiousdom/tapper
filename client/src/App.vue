@@ -8,19 +8,19 @@
 </template>
 
 <script>
-import PageHeader from './components/Header';
-import Register from './components/Register';
+import PageHeader from './components/Header'
+import Register from './components/Register'
 
 export default {
   name: 'App',
 
   components: {
     PageHeader,
-    Register,
+    Register
   },
 
   data: () => ({
     //
-  }),
-};
+  })
+}
 </script>

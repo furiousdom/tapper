@@ -40,13 +40,13 @@
 </template>
 
 <script>
-import authenticationService from '../services/authenticationService.js';
+import authenticationService from '../services/authenticationService.js'
 
 export default {
   props: {
-    source: String,
+    source: String
   },
-  data() {
+  data () {
     return {
       email: '',
       password: '',
@@ -54,16 +54,16 @@ export default {
     }
   },
   methods: {
-    async register() {
+    async register () {
       try {
         const response = await authenticationService.register({
           email: this.email,
           password: this.password
-        });
-        console.log(response);
+        })
+        console.log(response)
       } catch (err) {
         this.error = err.response.data.error
-        console.log(err);
+        console.log(err)
       }
     }
   }
