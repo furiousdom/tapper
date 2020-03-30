@@ -12,7 +12,7 @@
             md="4">
             <v-card class="elevation-12">
               <v-toolbar
-                color="primary"
+                color="rgb(236, 91, 91)"
                 dark
                 flat>
                 <v-toolbar-title>Registration form</v-toolbar-title>
@@ -21,20 +21,15 @@
                 <v-form>
                   <v-text-field
                     label="Email"
-                    name="email"
-                    type="email"
                     v-model="email" />
                   <v-text-field
-                    id="password"
                     label="Password"
-                    name="password"
-                    type="password"
                     v-model="password" />
                 </v-form>
               </v-card-text>
               <v-card-actions>
                 <v-spacer />
-                <v-btn @click="register" color="primary">Register</v-btn>
+                <v-btn @click="register" color="rgb(236, 91, 91)">Register</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
