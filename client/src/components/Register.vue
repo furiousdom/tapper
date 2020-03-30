@@ -20,8 +20,8 @@
               <v-card-text>
                 <v-form>
                   <v-text-field
-                    label="Email"
-                    v-model="email" />
+                    label="Username"
+                    v-model="username" />
                   <v-text-field
                     label="Password"
                     v-model="password" />
@@ -48,7 +48,7 @@ export default {
   },
   data () {
     return {
-      email: '',
+      username: '',
       password: '',
       error: null
     }
@@ -57,7 +57,7 @@ export default {
     async register () {
       try {
         const response = await authenticationService.register({
-          email: this.email,
+          username: this.username,
           password: this.password
         })
         console.log(response)
