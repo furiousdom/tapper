@@ -1,38 +1,30 @@
 const { User } = require('../database');
+const msg = require('../config/messages');
 
-module.exports = {
-  async register(req, res) {
-    try {
-      const user = await User.create(req.body);
-      res.send(user.toJSON());
-    } catch (err) {
-      res.status(400).send({
-        error: 'This email account is already in use.'
-      });
-    }
-  },
-  async login(req, res) {
-    try {
-      const { email, password } = req.body;
-      const user = await User.findOne({ where: { email } });
-      if (!user) {
-        return res.status(403).send({
-          error: 'The login information was incorrect.'
-        });
+function register(req, res) {
+  const { errors, body: { name, address, username, email, password, rePassword } } = req;
+  const payload = { errors, body: { name, address, username, email, password, rePassword } };
+  if (errors.length) return res.render('register', payload);
+  return User.findOne({ where: { username } })
+    .then(user => {
+      if (user) {
+        payload.errors.push(msg.exists);
+        return res.render('register', payload);
       }
-      const isPasswordValid = password === user.password;
-      if (!isPasswordValid) {
-        return res.status(403).send({
-          error: 'The login information was incorrect.'
-        });
-      }
-      const userJson = user.toJSON();
+      const newUser = User.create(payload.body);
+      res.send(newUser.toJSON());
+      // return newUser.encryptPassword()
+      //   .then(() => {
+      //     req.flash(msg.regComplete.label, msg.regComplete.text);
+      //     res.redirect('/users/login');
+      //   })
+      //   .catch(err => next(err));
+    });
+}
 
-      res.send({ user: userJson });
-    } catch (err) {
-      res.status(500).send({
-        error: 'An error has occured trying to log in.'
-      });
-    }
-  }
-};
+function logout(req, res) {
+  req.logout();
+  res.redirect('/users/login');
+}
+
+module.exports = { logout, register };

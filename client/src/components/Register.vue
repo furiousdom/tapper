@@ -20,11 +20,23 @@
               <v-card-text>
                 <v-form>
                   <v-text-field
+                    label="Name"
+                    v-model="name" />
+                  <v-text-field
+                    label="Address"
+                    v-model="address" />
+                  <v-text-field
+                    label="Username"
+                    v-model="username" />
+                  <v-text-field
                     label="Email"
                     v-model="email" />
                   <v-text-field
                     label="Password"
                     v-model="password" />
+                  <v-text-field
+                    label="Confirm Password"
+                    v-model="rePassword" />
                 </v-form>
               </v-card-text>
               <v-card-actions>
@@ -48,8 +60,12 @@ export default {
   },
   data () {
     return {
+      name: '',
+      address: '',
+      username: '',
       email: '',
       password: '',
+      rePassword: '',
       error: null
     }
   },
@@ -57,8 +73,12 @@ export default {
     async register () {
       try {
         const response = await authenticationService.register({
+          name: this.name,
+          address: this.address,
+          username: this.username,
           email: this.email,
-          password: this.password
+          password: this.password,
+          rePassword: this.rePassword
         })
         console.log(response)
       } catch (err) {

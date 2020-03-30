@@ -15,8 +15,9 @@
               outlined>
               <v-list-item three-line>
                 <v-list-item-content>
-                  <v-list-item-title class="headline mb-1">Hello</v-list-item-title>
-                  <v-list-item-subtitle>Welcome to the Ticketer app.</v-list-item-subtitle>
+                  <div class="overline mb-4">Login Success</div>
+                  <v-list-item-title class="headline mb-1">Dashboard</v-list-item-title>
+                  <v-btn>Logout</v-btn>
                 </v-list-item-content>
               </v-list-item>
             </v-card>
