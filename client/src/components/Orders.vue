@@ -1,32 +1,30 @@
 <template>
-  <v-content>
-    <v-container
-      fluid>
-      <v-row
-        align="center"
-        justify="center">
-        <v-col
-          cols="12"
-          sm="8"
-          md="4">
-          <v-card class="elevation-12">
-            <v-toolbar
-              color="rgb(236, 91, 91)"
-              dark
-              flat>
-              <v-toolbar-title>Orders</v-toolbar-title>
-            </v-toolbar>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-content>
+  <panel title="Orders">
+    <div v-for="order in orders"
+      :key="order.id">
+      {{ order.date }}
+      <div v-for="product in order.products"
+        :key="product.name">
+        {{ product.name }}
+        {{ product.packaging.type }}
+        {{ product.packaging.liters }}
+        {{ product.quantity }}
+      </div>
+    </div>
+  </panel>
 </template>
 
 <script>
+import Panel from '@/components/Panel'
+
 export default {
-  methods: {
-    navigateTo: (route) => this.$router.push(route)
+  data () {
+    return {
+      orders: null
+    }
+  },
+  components: {
+    Panel
   }
 }
 </script>
