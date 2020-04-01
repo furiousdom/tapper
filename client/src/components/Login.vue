@@ -24,6 +24,7 @@
                     v-model="username" />
                   <v-text-field
                     label="Password"
+                    type="password"
                     v-model="password" />
                 </v-form>
               </v-card-text>
@@ -60,7 +61,8 @@ export default {
           username: this.username,
           password: this.password
         })
-        console.log(response)
+        this.$store.dispatch('setToken', response.data.token)
+        this.$store.dispatch('setUser', response.data.user)
       } catch (err) {
         this.error = err.response.data.error
         console.log(err)

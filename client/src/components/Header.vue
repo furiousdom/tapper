@@ -18,12 +18,14 @@
     <v-spacer></v-spacer>
 
     <v-toolbar-items>
-      <v-btn>
+      <v-btn
+        v-if="!$store.state.isUserLoggedIn">
         <router-link to="login">
           LOG IN
         </router-link>
       </v-btn>
-      <v-btn>
+      <v-btn
+        v-if="!$store.state.isUserLoggedIn">
         <router-link to="register">
           SIGN UP
         </router-link>
