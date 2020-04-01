@@ -16,6 +16,7 @@
 
 <script>
 import Panel from '@/components/Panel'
+import OrderService from '@/services/order'
 
 export default {
   data () {
@@ -25,6 +26,9 @@ export default {
   },
   components: {
     Panel
+  },
+  async mounted () {
+    this.orders = await OrderService.getAllOrders()
   }
 }
 </script>
