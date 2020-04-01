@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import Hello from '@/components/Hello'
 import Register from '@/components/Register'
 import Login from '@/components/Login'
+import Dashboard from '@/components/Dashboard'
+import Orders from '@/components/Orders'
 
 Vue.use(VueRouter)
 
@@ -21,6 +23,16 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login
+  },
+  {
+    path: '/dashboard',
+    name: 'dashboard',
+    component: Dashboard
+  },
+  {
+    path: '/orders',
+    name: 'orders',
+    component: Orders
   }
   // {
   //   path: '/about',
