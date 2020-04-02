@@ -3,7 +3,7 @@ const PRODUCT_TYPES = ['KEG', 'BOTTLES'];
 module.exports = (sequelize, DataTypes) => {
   const Product = sequelize.define('Product', {
     name: DataTypes.STRING,
-    type: DataTypes.ENUM(PRODUCT_TYPES[0], PRODUCT_TYPES[1]),
+    type: DataTypes.ENUM(PRODUCT_TYPES),
     liters: DataTypes.INTEGER
   });
 

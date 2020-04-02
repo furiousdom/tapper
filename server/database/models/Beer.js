@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Beer = sequelize.define('Beer', {
     brand: DataTypes.STRING,
-    liters: DataTypes.INTEGER
+    availableLiters: DataTypes.INTEGER
   });
 
   Beer.associate = (models) => {
