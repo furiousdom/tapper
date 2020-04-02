@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
+  User.associate = (models) => {
+    User.belongsTo(models.Order, { foreignKey: 'userFk' });
+  };
+
   User.prototype.authenticate = function (password) {
     return bcrypt.compare(password, this.password)
       .then(isMatch => isMatch ? this : false);

@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Order.associate = (models) => {
-    Order.hasMany(models.User, { foreignKey: 'UserFk' });
+    Order.hasMany(models.User, { foreignKey: 'userFk' });
   };
 
   return Order;
