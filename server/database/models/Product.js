@@ -2,15 +2,26 @@ const PRODUCT_TYPES = ['KEG', 'BOTTLES'];
 
 module.exports = (sequelize, DataTypes) => {
   const Product = sequelize.define('Product', {
-    name: DataTypes.STRING,
+    createdAt: {
+      type: DataTypes.DATE,
+      field: 'created_at'
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      field: 'updated_at'
+    },
+    deletedAt: {
+      type: DataTypes.DATE,
+      field: 'deleted_at'
+    },
     type: DataTypes.ENUM(PRODUCT_TYPES),
     liters: DataTypes.INTEGER
   });
 
   Product.associate = (models) => {
-    Product.belongsToMany(models.Order, { through: models.ProductOrder });
-    Product.hasMany(models.ProductOrder);
-    Product.hasMany(models.Beer, { foreignKey: 'beerFk' });
+    Product.belongsToMany(models.Order, { through: models.ProductOrder, foreignKey: 'order_id' });
+    Product.hasMany(models.ProductOrder, { foreignKey: 'product_id' });
+    Product.belongsTo(models.Brand, { foreignKey: 'brand_id' });
   };
 
   return Product;
