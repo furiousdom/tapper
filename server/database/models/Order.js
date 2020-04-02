@@ -6,6 +6,8 @@ module.exports = (sequelize, DataTypes) => {
 
   Order.associate = (models) => {
     Order.hasMany(models.User, { foreignKey: 'userFk' });
+    Order.belongsToMany(models.Product, { through: models.OrderedProducts });
+    Order.hasMany(models.OrderedProducts);
   };
 
   return Order;
