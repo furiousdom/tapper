@@ -12,7 +12,7 @@ app.use(cors());
 app.use('/users', require('./routes/users'));
 app.use('/orders', require('./routes/orders'));
 
-sequelize.sync({ force: true })
+sequelize.sync()
   .then(() => {
     app.listen(config.PORT, console.log(`Server started on port ${config.PORT}`));
   });

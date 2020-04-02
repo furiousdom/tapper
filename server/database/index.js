@@ -19,12 +19,10 @@ const sequelize = new Sequelize(
 //   });
 
 const db = {
+  Beer: sequelize.import('./models/Beer'),
   Order: sequelize.import('./models/Order'),
-  OrderedProducts: sequelize.import('./models/OrderedProducts'),
-  PackageType: sequelize.import('./models/PackageType'),
-  Packaging: sequelize.import('./models/Packaging'),
   Product: sequelize.import('./models/Product'),
-  ProductName: sequelize.import('./models/ProductName'),
+  ProductOrder: sequelize.import('./models/ProductOrder'),
   User: sequelize.import('./models/User')
 };
 

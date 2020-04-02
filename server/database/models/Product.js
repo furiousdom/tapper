@@ -1,11 +1,16 @@
-module.exports = (sequelize, _) => {
-  const Product = sequelize.define('Product', {});
+const PRODUCT_TYPES = ['KEG', 'BOTTLES'];
+
+module.exports = (sequelize, DataTypes) => {
+  const Product = sequelize.define('Product', {
+    name: DataTypes.STRING,
+    type: DataTypes.ENUM(PRODUCT_TYPES[0], PRODUCT_TYPES[1]),
+    liters: DataTypes.INTEGER
+  });
 
   Product.associate = (models) => {
-    Product.hasMany(models.ProductName, { foreignKey: 'productNameFk' });
-    Product.hasMany(models.Packaging, { foreignKey: 'packagingFk' });
-    Product.belongsToMany(models.Order, { through: models.OrderedProducts });
-    Product.hasMany(models.OrderedProducts);
+    Product.belongsToMany(models.Order, { through: models.ProductOrder });
+    Product.hasMany(models.ProductOrder);
+    Product.hasMany(models.Beer, { foreignKey: 'beerFk' });
   };
 
   return Product;
