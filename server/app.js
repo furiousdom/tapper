@@ -9,8 +9,9 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use('/users', require('./routes/users'));
-app.use('/orders', require('./routes/orders'));
+app.use('/auth', require('./routes/auth'));
+app.use('/user', require('./routes/user'));
+app.use('/brand', require('./routes/brand'));
 
 sequelize.sync()
   .then(() => {

@@ -1,5 +1,9 @@
 const PRODUCT_TYPES = ['KEG', 'BOTTLES'];
 
+function isDestroyed() {
+  return true;
+}
+
 module.exports = (sequelize, DataTypes) => {
   const Product = sequelize.define('Product', {
     createdAt: {
@@ -16,10 +20,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     type: DataTypes.ENUM(PRODUCT_TYPES),
     liters: DataTypes.INTEGER
+  }, {
+    hooks: {
+      afterDestroy: isDestroyed
+    }
   });
 
   Product.associate = (models) => {
-    Product.belongsToMany(models.Order, { through: models.ProductOrder, foreignKey: { zname: 'orderId', field: 'order_id' } });
+    Product.belongsToMany(models.Order, { through: models.ProductOrder, foreignKey: { name: 'orderId', field: 'order_id' } });
     Product.hasMany(models.ProductOrder, { foreignKey: { name: 'productId', field: 'product_id' } });
     Product.belongsTo(models.Brand, { foreignKey: { name: 'brandId', field: 'brand_id' } });
   };
