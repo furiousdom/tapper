@@ -1,10 +1,6 @@
 const Sequelize = require('sequelize');
 const config = require('../config/config');
-// const db = {};
-// const fs = require('fs');
-// const path = require('path');
 
-// const modelsDir = path.join(__dirname, 'models');
 const sequelize = new Sequelize(
   config.db.database,
   config.db.user,
@@ -12,14 +8,8 @@ const sequelize = new Sequelize(
   config.db.options
 );
 
-// fs.readdirSync(modelsDir)
-//   .forEach(file => {
-//     const model = sequelize.import(path.join(modelsDir, file));
-//     db[model.name] = model;
-//   });
-
 const db = {
-  Beer: sequelize.import('./models/Beer'),
+  Brand: sequelize.import('./models/Brand'),
   Order: sequelize.import('./models/Order'),
   Product: sequelize.import('./models/Product'),
   ProductOrder: sequelize.import('./models/ProductOrder'),

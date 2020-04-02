@@ -10,6 +10,18 @@ function encryptPassword(user) {
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
+    createdAt: {
+      type: DataTypes.DATE,
+      field: 'created_at'
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      field: 'updated_at'
+    },
+    deletedAt: {
+      type: DataTypes.DATE,
+      field: 'deleted_at'
+    },
     username: {
       type: DataTypes.STRING,
       unique: true
@@ -22,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   User.associate = (models) => {
-    User.belongsTo(models.Order, { foreignKey: 'userFk' });
+    User.hasMany(models.Order, { foreignKey: { name: 'userId', field: 'user_id' } });
   };
 
   User.prototype.authenticate = function (password) {

@@ -5,6 +5,7 @@ import Register from '@/components/Register'
 import Login from '@/components/Login'
 import Dashboard from '@/components/Dashboard'
 import Orders from '@/components/Orders'
+import CreateOrder from '@/components/CreateOrder'
 
 Vue.use(VueRouter)
 
@@ -33,7 +34,13 @@ const routes = [
     path: '/orders',
     name: 'orders',
     component: Orders
+  },
+  {
+    path: '/orders/create',
+    name: 'orders-create',
+    component: CreateOrder
   }
+
   // {
   //   path: '/about',
   //   name: 'About',
