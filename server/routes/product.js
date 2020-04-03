@@ -1,4 +1,4 @@
-const { create, fetch, remove, update } = require('../controllers/brand.controller');
+const { create, fetch, remove, update } = require('../controllers/product.controller');
 const express = require('express');
 const router = express.Router();
 

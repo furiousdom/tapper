@@ -12,6 +12,7 @@ app.use(cors());
 app.use('/auth', require('./routes/auth'));
 app.use('/user', require('./routes/user'));
 app.use('/brand', require('./routes/brand'));
+app.use('/product', require('./routes/product'));
 
 sequelize.sync()
   .then(() => {

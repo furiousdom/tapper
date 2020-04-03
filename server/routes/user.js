@@ -2,7 +2,7 @@ const { create, fetch, remove, update } = require('../controllers/user.controlle
 const express = require('express');
 const router = express.Router();
 
-router.get('/order', fetch);
+router.get('/order/all', fetch);
 router.post('/order/create', create);
 router.patch('/order/:id', update);
 router.delete('/order/:id', remove);
