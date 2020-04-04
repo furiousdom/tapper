@@ -1,8 +1,8 @@
-const { Product } = require('../database');
+const { Brand, Product } = require('../database');
 
 async function fetch(_, res) {
   try {
-    res.send(await Product.findAll());
+    res.send(await Product.findAll({ include: Brand }));
   } catch (error) {
     res.status(500).send({ error });
   }

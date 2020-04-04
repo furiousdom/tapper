@@ -1,45 +1,60 @@
-const { Order } = require('../database');
+const { Order, Product, ProductOrder } = require('../database');
 
-async function fetch(req, res) {
-  try {
-    res.send(await Order.findAll());
-  } catch (error) {
-    res.status(500).send({ error });
-  }
+function fetch({ query: { userId } }, res) {
+  Order.findAll({
+    where: { userId },
+    include: {
+      model: ProductOrder,
+      include: Product
+    }
+  })
+    .then(orders => res.send(orders))
+    .catch(err => res.status(400).send(err));
 }
 
-async function create({ body: { status, userId } }, res) {
-  try {
-    res.send(await Order.create({
-      date: new Date(),
-      status,
-      userId
-    }));
-  } catch (error) {
-    res.status(500).send({ error });
-  }
+function create({ body: { userId, products } }, res) {
+  return Order.create({ date: new Date(), status: false, userId })
+    .then(order => {
+      return ProductOrder.bulkCreate(products.map(({ productId, quantity }) => {
+        return {
+          quantity,
+          productId,
+          orderId: order.id
+        };
+      }), { returning: true })
+        .then(products => order.setProductOrders(products));
+    })
+    .then(() => res.sendStatus(200))
+    .catch(err => res.status(400).send(err));
 }
 
-async function update({ params: { id }, body: { status } }, res) {
-  try {
-    console.log(id, status);
-    const order = await Order.findByPk(id);
-    console.log(order);
-    order.status = !status;
-    res.send(await order.save());
-  } catch (error) {
-    res.status(500).send({ error });
-  }
+function update(req, res) {
+  const { params: { id }, body: { status, products } } = req;
+  return Order.findByPk(id, { include: ProductOrder })
+    .then(async order => {
+      await order.update({ status });
+      ProductOrder.destroy({ where: { orderId: id } });
+      ProductOrder.bulkCreate(products.map(({ productId, quantity }) => {
+        return {
+          quantity,
+          productId,
+          orderId: order.id
+        };
+      }), { returning: true })
+        .then(products => order.setProductOrders(products));
+    })
+    .then(() => res.sendStatus(200))
+    .catch(err => res.send(err));
 }
 
-async function remove({ params: { id } }, res) {
-  try {
-    const order = await Order.findByPk(id);
-    const arr = await order.destroy();
-    if (arr) res.status(204).send();
-  } catch (error) {
-    res.status(500).send({ error });
-  }
+function remove({ params: { id } }, res) {
+  return Order.findByPk(id, { include: ProductOrder })
+    .then(order => {
+      ProductOrder.destroy({ where: { orderId: order.id } })
+        .then(() => order.destroy());
+    })
+    .then(() => res.sendStatus(200))
+    .catch(err => res.send(err));
 }
 
 module.exports = { fetch, create, update, remove };
