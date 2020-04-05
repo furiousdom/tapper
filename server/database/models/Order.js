@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.BOOLEAN
   });
 
-  Order.associate = (models) => {
+  Order.associate = models => {
     Order.belongsToMany(models.Product, { through: models.ProductOrder, foreignKey: { name: 'orderId', field: 'order_id' } });
     Order.hasMany(models.ProductOrder, { foreignKey: { name: 'orderId', field: 'order_id' } });
     Order.belongsTo(models.User, { foreignKey: { name: 'userId', field: 'user_id' } });

@@ -12,20 +12,20 @@
         </v-list-item-content>
       </v-list-item>
       <v-card-actions>
-      <v-spacer />
-      <v-btn color="rgb(236, 91, 91)">
-        <router-link to="/login">
-          Log In
-        </router-link>
-      </v-btn>
-      <v-btn color="rgb(236, 91, 91)">
-        <router-link to="/register">
-          Sign Up
-        </router-link>
-      </v-btn>
-    </v-card-actions>
+        <v-spacer />
+        <v-btn color="rgb(236, 91, 91)">
+          <router-link to="/login">
+            Log In
+          </router-link>
+        </v-btn>
+        <v-btn color="rgb(236, 91, 91)">
+          <router-link to="/register">
+            Sign Up
+          </router-link>
+        </v-btn>
+      </v-card-actions>
     </v-card>
-    <router-view :key="$route.path"></router-view>
+    <router-view :key="$route.path" />
   </v-content>
 </template>
 

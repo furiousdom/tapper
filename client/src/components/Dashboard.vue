@@ -25,16 +25,16 @@
 </template>
 
 <script>
-import Orders from './Orders'
+import Orders from './Orders';
 
 export default {
+  methods: {
+    navigateTo(route) {
+      this.$router.push(route);
+    }
+  },
   components: {
     Orders
-  },
-  methods: {
-    navigateTo (route) {
-      this.$router.push(route)
-    }
   }
-}
+};
 </script>

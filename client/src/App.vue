@@ -1,17 +1,15 @@
 <template>
   <v-app>
-    <NavBar />
+    <Navbar v-if="$store.state.auth.user" />
     <router-view></router-view>
   </v-app>
 </template>
 
 <script>
-import NavBar from './components/NavBar'
+import Navbar from './components/Navbar'
 
 export default {
   name: 'App',
-  components: {
-    NavBar
-  }
+  components: { Navbar }
 }
 </script>

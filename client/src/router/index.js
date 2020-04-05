@@ -1,15 +1,14 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Auth from '@/components/auth/Container'
-import Login from '@/components/auth/Login'
-import Register from '@/components/auth/Register'
-import Dashboard from '@/components/Dashboard'
-import Orders from '@/components/Orders'
-import CreateOrder from '@/components/CreateOrder'
+import Auth from '@/src/components/auth';
+import CreateOrder from '@/src/components/CreateOrder';
+import Dashboard from '@/src/components/Dashboard';
+import Login from '@/src/components/auth/Login';
+import Orders from '@/src/components/Orders';
+import Register from '@/src/components/auth/Register';
+import store from '@/src/store';
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
-import store from '@/store'
-
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const router = new VueRouter({
   mode: 'history',
@@ -50,14 +49,14 @@ const router = new VueRouter({
       meta: { auth: true }
     }
   ]
-})
+});
 
 router.beforeEach((to, _, next) => {
   if (to.matched.some(record => record.meta.auth) && !store.state.auth.user) {
-    next({ path: '/login', query: { redirect: to.fullPath } })
+    next({ name: 'login' });
   } else {
-    next()
+    next();
   }
-})
+});
 
-export default router
+export default router;

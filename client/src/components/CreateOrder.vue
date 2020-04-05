@@ -1,16 +1,11 @@
 <template>
-  <v-btn class="mx-2" fab dark large color="purple">
-      <v-icon dark>mdi-android</v-icon>
+  <v-btn color="purple" fab dark large class="mx-2">
+    <v-icon dark>mdi-android</v-icon>
   </v-btn>
 </template>
 
 <script>
 export default {
-  data () {
-    return {
-      status: false,
-      userId: 1
-    }
-  }
-}
+  name: 'create-order'
+};
 </script>

@@ -1,4 +1,4 @@
-<template v-if="$store.state.auth.user">
+<template>
   <v-app-bar
     app
     color="white">
@@ -15,14 +15,14 @@
     </span>
 
     <v-toolbar-items>
-        <v-btn>
-          <router-link to="dashboard">
-            Dashboard
-          </router-link>
-        </v-btn>
+      <v-btn>
+        <router-link to="dashboard">
+          Dashboard
+        </router-link>
+      </v-btn>
     </v-toolbar-items>
 
-    <v-spacer></v-spacer>
+    <v-spacer />
 
     <v-toolbar-items>
       <v-btn
@@ -36,12 +36,12 @@
 <script>
 export default {
   methods: {
-    logout () {
-      this.$store.dispatch('logout')
-      this.$router.push('/')
+    logout() {
+      this.$store.dispatch('logout');
+      this.$router.push('/');
     }
   }
-}
+};
 </script>
 
 <style>

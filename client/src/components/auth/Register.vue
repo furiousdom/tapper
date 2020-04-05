@@ -3,12 +3,12 @@
     <v-card-text>
       <v-form>
         <v-text-field
-          label="Username"
-          v-model="username" />
+          v-model="username"
+          label="Username" />
         <v-text-field
+          v-model="password"
           label="Password"
-          type="password"
-          v-model="password" />
+          type="password" />
       </v-form>
     </v-card-text>
     <v-card-actions>
@@ -19,32 +19,32 @@
 </template>
 
 <script>
-import authService from '@/services/auth.js'
-import Panel from '@/components/Panel'
+import authService from '@/src/services/auth.js';
+import Panel from '@/src/components/Panel';
 
 export default {
-  data () {
+  data() {
     return {
       username: '',
       password: '',
       error: null
-    }
+    };
   },
   methods: {
-    async register () {
+    async register() {
       try {
         await authService.register({
           username: this.username,
           password: this.password
-        })
+        });
       } catch (err) {
-        this.error = err.response.data.error
-        console.log(err)
+        this.error = err.response.data.error;
+        console.log(err);
       }
     }
   },
   components: {
     Panel
   }
-}
+};
 </script>

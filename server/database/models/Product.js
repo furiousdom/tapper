@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     liters: DataTypes.INTEGER
   });
 
-  Product.associate = (models) => {
+  Product.associate = models => {
     Product.belongsToMany(models.Order, { through: models.ProductOrder, foreignKey: { name: 'productId', field: 'product_id' } });
     Product.hasMany(models.ProductOrder, { foreignKey: { name: 'productId', field: 'product_id' } });
     Product.belongsTo(models.Brand, { foreignKey: { name: 'brandId', field: 'brand_id' } });

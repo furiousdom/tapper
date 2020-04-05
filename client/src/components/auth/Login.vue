@@ -3,12 +3,12 @@
     <v-card-text>
       <v-form>
         <v-text-field
-          label="Username"
-          v-model="username" />
+          v-model="username"
+          label="Username" />
         <v-text-field
+          v-model="password"
           label="Password"
-          type="password"
-          v-model="password" />
+          type="password" />
       </v-form>
     </v-card-text>
     <v-card-actions>
@@ -19,31 +19,28 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import Panel from '@/components/Panel'
+import { mapActions } from 'vuex';
+import Panel from '@/src/components/Panel';
 
 export default {
-  props: {
-    source: String
-  },
-  data () {
+  data() {
     return {
       username: '',
       password: '',
       error: null
-    }
+    };
   },
   methods: {
     ...mapActions(['login']),
-    submit () {
+    submit() {
       this.login({ username: this.username, password: this.password })
         .then(data => {
-          this.$router.push('/dashboard')
-        })
+          this.$router.push('/dashboard');
+        });
     }
   },
   components: {
     Panel
   }
-}
+};
 </script>

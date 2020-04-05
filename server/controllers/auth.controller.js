@@ -1,7 +1,7 @@
-const { User } = require('../database');
 const config = require('../config/config');
 const jwt = require('jsonwebtoken');
 const msg = require('../config/messages');
+const { User } = require('../database');
 
 async function register(req, res) {
   const { errors, body: { name, email, password, rePassword } } = req;

@@ -1,10 +1,12 @@
 <template>
   <panel title="Orders">
-    <div v-for="order in orders"
+    <div
+      v-for="order in orders"
       :key="order.id">
       {{ order.date }}
       {{ order.status }}
-      <div v-for="productOrder in order.ProductOrders"
+      <div
+        v-for="productOrder in order.ProductOrders"
         :key="productOrder.name">
         {{ productOrder.quantity }}
         {{ productOrder.Product.type }}
@@ -16,23 +18,23 @@
 </template>
 
 <script>
-import Panel from '@/components/Panel'
-import OrderService from '@/services/order'
+import OrderService from '@/src/services/order';
+import Panel from '@/src/components/Panel';
 
 export default {
-  data () {
+  data() {
     return {
       orders: null
-    }
+    };
+  },
+  async mounted() {
+    const params = {
+      userId: this.$store.state.auth.user.id
+    };
+    this.orders = await OrderService.fetch(params);
   },
   components: {
     Panel
-  },
-  async mounted () {
-    const params = {
-      userId: this.$store.state.auth.user.id
-    }
-    this.orders = await OrderService.fetch(params)
   }
-}
+};
 </script>
