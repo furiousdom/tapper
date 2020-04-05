@@ -1,5 +1,7 @@
 <template>
-
+  <v-btn class="mx-2" fab dark large color="purple">
+      <v-icon dark>mdi-android</v-icon>
+  </v-btn>
 </template>
 
 <script>

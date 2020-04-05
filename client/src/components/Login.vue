@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import authenticationService from '@/services/authenticationService.js'
+import authService from '@/services/auth.js'
 import Panel from '@/components/Panel'
 
 export default {
@@ -36,7 +36,7 @@ export default {
   methods: {
     async login () {
       try {
-        const response = await authenticationService.login({
+        const response = await authService.login({
           username: this.username,
           password: this.password
         })

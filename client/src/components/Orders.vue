@@ -3,12 +3,13 @@
     <div v-for="order in orders"
       :key="order.id">
       {{ order.date }}
-      <div v-for="product in order.products"
-        :key="product.name">
-        {{ product.name }}
-        {{ product.packaging.type }}
-        {{ product.packaging.liters }}
-        {{ product.quantity }}
+      {{ order.status }}
+      <div v-for="productOrder in order.ProductOrders"
+        :key="productOrder.name">
+        {{ productOrder.quantity }}
+        {{ productOrder.Product.type }}
+        {{ productOrder.Product.liters }}
+        {{ productOrder.Product.brandId }}
       </div>
     </div>
   </panel>
@@ -28,7 +29,10 @@ export default {
     Panel
   },
   async mounted () {
-    this.orders = await OrderService.getAllOrders()
+    const params = {
+      userId: this.$store.state.token.id
+    }
+    this.orders = await OrderService.fetch(params)
   }
 }
 </script>
