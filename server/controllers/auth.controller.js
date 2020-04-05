@@ -9,7 +9,7 @@ async function register(req, res) {
   if (errors.length) return res.send(payload);
   try {
     const user = await User.create(req.body);
-    res.send(user.toJSON());
+    if (user) res.sendStatus(201);
   } catch (err) {
     res.status(400).send(err);
   }

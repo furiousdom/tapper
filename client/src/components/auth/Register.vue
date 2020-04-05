@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import authService from '../services/auth.js'
+import authService from '@/services/auth.js'
 import Panel from '@/components/Panel'
 
 export default {

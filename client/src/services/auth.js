@@ -1,10 +1,17 @@
 import api from './axios'
 
-export default {
-  register (credentials) {
-    return api.post('/auth/register', credentials)
-  },
-  login (credentials) {
-    return api.post('/auth/login', credentials)
-  }
+const urls = {
+  register: '/auth/register',
+  login: '/auth/login'
 }
+
+function register (credentials) {
+  return api.post(urls.register, credentials)
+}
+
+function login (credentials) {
+  return api.post(urls.login, credentials)
+    .then(res => res.data)
+}
+
+export default { login, register }

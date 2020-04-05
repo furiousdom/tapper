@@ -30,7 +30,7 @@ export default {
   },
   async mounted () {
     const params = {
-      userId: this.$store.state.token.id
+      userId: this.$store.state.auth.user.id
     }
     this.orders = await OrderService.fetch(params)
   }

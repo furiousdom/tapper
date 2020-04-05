@@ -13,13 +13,13 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn @click="login" color="rgb(236, 91, 91)">Login</v-btn>
+      <v-btn @click="submit" color="rgb(236, 91, 91)">Login</v-btn>
     </v-card-actions>
   </panel>
 </template>
 
 <script>
-import authService from '@/services/auth.js'
+import { mapActions } from 'vuex'
 import Panel from '@/components/Panel'
 
 export default {
@@ -34,19 +34,12 @@ export default {
     }
   },
   methods: {
-    async login () {
-      try {
-        const response = await authService.login({
-          username: this.username,
-          password: this.password
+    ...mapActions(['login']),
+    submit () {
+      this.login({ username: this.username, password: this.password })
+        .then(data => {
+          this.$router.push('/dashboard')
         })
-        this.$store.dispatch('setToken', response.data.token)
-        this.$store.dispatch('setUser', response.data.user)
-        this.$router.push('dashboard')
-      } catch (err) {
-        this.error = err.response.data.error
-        console.log(err)
-      }
     }
   },
   components: {
@@ -54,10 +47,3 @@ export default {
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.error {
-  color: red;
-}
-</style>

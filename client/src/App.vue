@@ -1,22 +1,17 @@
 <template>
   <v-app>
-    <PageHeader />
+    <NavBar />
     <router-view></router-view>
   </v-app>
 </template>
 
 <script>
-import PageHeader from './components/Header'
+import NavBar from './components/NavBar'
 
 export default {
   name: 'App',
-
   components: {
-    PageHeader
-  },
-
-  data: () => ({
-    //
-  })
+    NavBar
+  }
 }
 </script>
