@@ -2,16 +2,13 @@
   <panel title="Register">
     <v-card-text>
       <v-form>
-        <v-text-field
-          v-model="username"
-          label="Username" />
-        <v-text-field
-          v-model="password"
-          label="Password"
-          type="password" />
+        <v-text-field v-model="username" label="Username" />
+        <v-text-field v-model="password" label="Password" type="password" />
       </v-form>
     </v-card-text>
     <v-card-actions>
+      <v-spacer />
+      <router-link to="/login">Or Sign In</router-link>
       <v-spacer />
       <v-btn @click="register" color="rgb(236, 91, 91)">Register</v-btn>
     </v-card-actions>
@@ -19,32 +16,17 @@
 </template>
 
 <script>
-import authService from '@/src/services/auth.js';
-import Panel from '@/src/components/Panel';
+import api from '@/src/services/auth.js';
+import panel from '@/src/components/shared/Panel';
 
 export default {
-  data() {
-    return {
-      username: '',
-      password: '',
-      error: null
-    };
-  },
+  data: () => ({ username: '', password: '', error: null }),
   methods: {
-    async register() {
-      try {
-        await authService.register({
-          username: this.username,
-          password: this.password
-        });
-      } catch (err) {
-        this.error = err.response.data.error;
-        console.log(err);
-      }
+    register() {
+      const { username, password } = this;
+      return api.register({ username, password });
     }
   },
-  components: {
-    Panel
-  }
+  components: { panel }
 };
 </script>

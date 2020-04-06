@@ -4,29 +4,18 @@
     color="white">
     <div class="d-flex align-center">
       <v-img
+        src="../assets/tapb-logo.svg"
         alt="TapB Logo"
-        class="shrink mt-1 hidden-sm-and-down"
         contain
-        src="../assets/tapb-logo.svg" />
+        class="shrink mt-1 hidden-sm-and-down" />
     </div>
-
     <span>
       <v-toolbar-title class="mr-4">Ticketer</v-toolbar-title>
     </span>
-
-    <v-toolbar-items>
-      <v-btn>
-        <router-link to="dashboard">
-          Dashboard
-        </router-link>
-      </v-btn>
-    </v-toolbar-items>
-
     <v-spacer />
-
     <v-toolbar-items>
       <v-btn
-        @click="logout">
+        @click="submit">
         LOG OUT
       </v-btn>
     </v-toolbar-items>
@@ -34,19 +23,16 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
+  name: 'navbar',
   methods: {
-    logout() {
-      this.$store.dispatch('logout');
-      this.$router.push('/');
+    ...mapActions('auth', ['logout']),
+    submit() {
+      this.logout();
+      this.$router.push('/login');
     }
   }
 };
 </script>
-
-<style>
-  router-link {
-    text-decoration: none;
-    text-decoration-line: none;
-  }
-</style>

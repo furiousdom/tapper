@@ -1,15 +1,17 @@
 <template>
   <v-app>
-    <Navbar v-if="$store.state.auth.user" />
-    <router-view></router-view>
+    <navbar v-if="user" />
+    <router-view :key="$route.path" />
   </v-app>
 </template>
 
 <script>
-import Navbar from './components/Navbar'
+import { mapState } from 'vuex';
+import navbar from './components/Navbar';
 
 export default {
-  name: 'App',
-  components: { Navbar }
-}
+  name: 'app',
+  computed: mapState('auth', ['user']),
+  components: { navbar }
+};
 </script>

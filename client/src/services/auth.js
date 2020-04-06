@@ -1,16 +1,18 @@
 import api from './axios';
+import path from 'path';
 
 const urls = {
-  register: '/auth/register',
-  login: '/auth/login'
+  root: '/auth',
+  register: '/register',
+  login: '/login'
 };
 
 function register(credentials) {
-  return api.post(urls.register, credentials);
+  return api.post(path.join(urls.root, urls.register), credentials);
 }
 
 function login(credentials) {
-  return api.post(urls.login, credentials)
+  return api.post(path.join(urls.root, urls.login), credentials)
     .then(res => res.data);
 }
 

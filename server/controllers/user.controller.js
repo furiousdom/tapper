@@ -1,11 +1,17 @@
-const { Order, Product, ProductOrder } = require('../database');
+const { Brand, Order, Product, ProductOrder } = require('../database');
 
 function fetch({ query: { userId } }, res) {
   Order.findAll({
     where: { userId },
     include: {
       model: ProductOrder,
-      include: Product
+      include: {
+        model: Product,
+        include: {
+          model: Brand,
+          attributes: { exclude: ['liters'] }
+        }
+      }
     }
   })
     .then(orders => res.send(orders))

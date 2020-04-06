@@ -1,8 +1,9 @@
 import Auth from '@/src/components/auth';
-import CreateOrder from '@/src/components/CreateOrder';
-import Dashboard from '@/src/components/Dashboard';
+import CreateOrder from '@/src/components/dashboard/CreateOrder';
+import Dashboard from '@/src/components/dashboard';
+import get from 'lodash/get';
 import Login from '@/src/components/auth/Login';
-import Orders from '@/src/components/Orders';
+import Orders from '@/src/components/dashboard/Orders';
 import Register from '@/src/components/auth/Register';
 import store from '@/src/store';
 import Vue from 'vue';
@@ -12,51 +13,42 @@ Vue.use(VueRouter);
 
 const router = new VueRouter({
   mode: 'history',
-  routes: [
-    {
-      path: '/',
-      name: 'auth',
-      component: Auth,
-      children: [
-        {
-          path: '/register',
-          name: 'register',
-          component: Register
-        },
-        {
-          path: '/login',
-          name: 'login',
-          component: Login
-        }
-      ]
-    },
-    {
-      path: '/dashboard',
-      name: 'dashboard',
-      component: Dashboard,
-      meta: { auth: true }
-    },
-    {
+  routes: [{
+    path: '/auth',
+    name: 'auth',
+    component: Auth,
+    children: [{
+      path: '/register',
+      name: 'register',
+      component: Register
+    }, {
+      path: '/login',
+      name: 'login',
+      component: Login
+    }]
+  }, {
+    path: '/',
+    name: 'dashboard',
+    component: Dashboard,
+    meta: { auth: true },
+    children: [{
       path: '/orders',
       name: 'orders',
-      component: Orders,
-      meta: { auth: true }
-    },
-    {
+      component: Orders
+    }, {
       path: '/orders/create',
-      name: 'orders-create',
+      name: 'create-order',
       component: CreateOrder,
       meta: { auth: true }
-    }
-  ]
+    }]
+  }]
 });
 
-router.beforeEach((to, _, next) => {
-  if (to.matched.some(record => record.meta.auth) && !store.state.auth.user) {
-    next({ name: 'login' });
-  } else {
-    next();
-  }
+router.beforeEach((to, _from, next) => {
+  const user = get(store.state, 'auth.user');
+  const isNotAuthenticated = to.matched.some(it => it.meta.auth) && !user;
+  if (isNotAuthenticated) return next({ name: 'login' });
+  return next();
 });
 
 export default router;

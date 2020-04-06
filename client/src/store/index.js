@@ -4,11 +4,6 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-const options = {
-  strict: true,
-  modules: {
-    auth
-  }
-};
+const options = { strict: true, modules: { auth } };
 
 export default new Vuex.Store(options);

@@ -2,16 +2,13 @@
   <panel title="Log In">
     <v-card-text>
       <v-form>
-        <v-text-field
-          v-model="username"
-          label="Username" />
-        <v-text-field
-          v-model="password"
-          label="Password"
-          type="password" />
+        <v-text-field v-model="username" label="Username" />
+        <v-text-field v-model="password" label="Password" type="password" />
       </v-form>
     </v-card-text>
     <v-card-actions>
+      <v-spacer />
+      <router-link to="/register">Or Sign Up</router-link>
       <v-spacer />
       <v-btn @click="submit" color="rgb(236, 91, 91)">Login</v-btn>
     </v-card-actions>
@@ -20,27 +17,19 @@
 
 <script>
 import { mapActions } from 'vuex';
-import Panel from '@/src/components/Panel';
+import panel from '@/src/components/shared/Panel';
 
 export default {
-  data() {
-    return {
-      username: '',
-      password: '',
-      error: null
-    };
-  },
+  name: 'login',
+  data: () => ({ username: '', password: '', error: null }),
   methods: {
-    ...mapActions(['login']),
+    ...mapActions('auth', ['login']),
     submit() {
-      this.login({ username: this.username, password: this.password })
-        .then(data => {
-          this.$router.push('/dashboard');
-        });
+      const { username, password } = this;
+      return this.login({ username, password })
+        .then(data => this.$router.push('/orders'));
     }
   },
-  components: {
-    Panel
-  }
+  components: { panel }
 };
 </script>
