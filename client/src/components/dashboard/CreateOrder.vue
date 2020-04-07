@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <router-link to="/orders">
+    <router-link to="{ name: 'orders' }">
       <v-btn>
         <v-icon>arrow_back</v-icon>
       </v-btn>
@@ -32,13 +32,11 @@
 <script>
 export default {
   name: 'create-order',
-  data: () => {
-    return {
-      date: null,
-      status: false,
-      products: []
-    };
-  },
+  data: () => ({
+    date: null,
+    status: false,
+    products: []
+  }),
   methods: {
     submit() {
       console.log('Submitting orders is not implemented yet!');

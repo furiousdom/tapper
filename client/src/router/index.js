@@ -38,8 +38,7 @@ const router = new VueRouter({
     }, {
       path: '/orders/create',
       name: 'create-order',
-      component: CreateOrder,
-      meta: { auth: true }
+      component: CreateOrder
     }]
   }]
 });

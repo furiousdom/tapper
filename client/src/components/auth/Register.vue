@@ -8,7 +8,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <router-link to="/login">Or Sign In</router-link>
+      <router-link to="{ name: 'login' }">Or Sign In</router-link>
       <v-spacer />
       <v-btn @click="register" color="rgb(236, 91, 91)">Register</v-btn>
     </v-card-actions>
@@ -20,7 +20,12 @@ import api from '@/src/services/auth.js';
 import panel from '@/src/components/shared/Panel';
 
 export default {
-  data: () => ({ username: '', password: '', error: null }),
+  name: 'register',
+  data: () => ({
+    username: '',
+    password: '',
+    error: null
+  }),
   methods: {
     register() {
       const { username, password } = this;

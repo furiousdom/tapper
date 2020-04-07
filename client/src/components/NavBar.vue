@@ -15,7 +15,7 @@
     <v-spacer />
     <v-toolbar-items>
       <v-btn
-        @click="submit">
+        @click="signout">
         LOG OUT
       </v-btn>
     </v-toolbar-items>
@@ -29,9 +29,9 @@ export default {
   name: 'navbar',
   methods: {
     ...mapActions('auth', ['logout']),
-    submit() {
+    signout() {
       this.logout();
-      this.$router.push('/login');
+      this.$router.push({ name: 'login' });
     }
   }
 };

@@ -8,7 +8,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <router-link to="/register">Or Sign Up</router-link>
+      <router-link to="{ name: 'register' }">Or Sign Up</router-link>
       <v-spacer />
       <v-btn @click="submit" color="rgb(236, 91, 91)">Login</v-btn>
     </v-card-actions>
@@ -27,7 +27,7 @@ export default {
     submit() {
       const { username, password } = this;
       return this.login({ username, password })
-        .then(data => this.$router.push('/orders'));
+        .then(data => this.$router.push({ name: 'orders' }));
     }
   },
   components: { panel }

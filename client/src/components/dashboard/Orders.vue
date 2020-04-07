@@ -16,12 +16,12 @@
               </c-col>
               <v-col cols="3">
                 <div
-                  v-for="{ quantity, Product: { type, liters, Brand: { name } }} in ProductOrders"
-                  :key="name">
+                  v-for="{ id, quantity, Product } in ProductOrders"
+                  :key="id">
                   {{ quantity }}x
-                  {{ name }}
-                  {{ type }}
-                  {{ liters }}L
+                  {{ Product.Brand.name }}
+                  {{ Product.type }}
+                  {{ Product.liters }}L
                 </div>
               </v-col>
             </v-row>
@@ -39,11 +39,12 @@ import { mapState } from 'vuex';
 import panel from '@/src/components/shared/Panel';
 
 export default {
+  name: 'orders',
   data: () => ({ orders: null }),
   computed: mapState('auth', ['user']),
   methods: {
     formatDate(date) {
-      return format(date, 'MMM do, yyyy');
+      return date && format(new Date(date), 'MMM do, yyyy');
     }
   },
   async mounted() {

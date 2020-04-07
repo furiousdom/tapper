@@ -3,16 +3,16 @@ import path from 'path';
 
 const urls = {
   root: '/auth',
-  register: '/register',
-  login: '/login'
+  register: () => path.join(this.root, '/register'),
+  login: () => path.join(this.root, '/login')
 };
 
 function register(credentials) {
-  return api.post(path.join(urls.root, urls.register), credentials);
+  return api.post(urls.register, credentials);
 }
 
 function login(credentials) {
-  return api.post(path.join(urls.root, urls.login), credentials)
+  return api.post(urls.login, credentials)
     .then(res => res.data);
 }
 
