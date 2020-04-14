@@ -8,7 +8,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <router-link to="{ name: 'register' }">Or Sign Up</router-link>
+      <router-link :to="{ name: 'register' }">Or Sign Up</router-link>
       <v-spacer />
       <v-btn @click="submit" color="rgb(236, 91, 91)">Login</v-btn>
     </v-card-actions>
@@ -21,7 +21,11 @@ import panel from '@/src/components/shared/Panel';
 
 export default {
   name: 'login',
-  data: () => ({ username: '', password: '', error: null }),
+  data: () => ({
+    username: '',
+    password: '',
+    error: null
+  }),
   methods: {
     ...mapActions('auth', ['login']),
     submit() {

@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use('/auth', require('./routes/auth'));
-app.use('/user', require('./routes/user'));
+app.use('/order', require('./routes/order'));
 app.use('/brand', require('./routes/brand'));
 app.use('/product', require('./routes/product'));
 

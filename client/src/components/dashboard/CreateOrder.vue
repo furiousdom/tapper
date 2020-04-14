@@ -1,11 +1,11 @@
 <template>
   <div class="container">
-    <router-link to="{ name: 'orders' }">
-      <v-btn>
-        <v-icon>arrow_back</v-icon>
-      </v-btn>
-    </router-link>
     <panel title="Create Order">
+      <router-link :to="{ name: 'orders' }">
+        <v-btn>
+          <v-icon>mdi-arrow-left</v-icon>
+        </v-btn>
+      </router-link>
       <v-card-text>
         <v-form>
           <v-row>
@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import panel from '@/src/components/shared/Panel';
+
 export default {
   name: 'create-order',
   data: () => ({
@@ -41,6 +43,13 @@ export default {
     submit() {
       console.log('Submitting orders is not implemented yet!');
     }
-  }
+  },
+  components: { panel }
 };
 </script>
+
+<style lang="scss" scoped>
+a {
+  text-decoration: none !important;
+}
+</style>

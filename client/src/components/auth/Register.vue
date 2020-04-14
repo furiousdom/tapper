@@ -8,7 +8,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <router-link to="{ name: 'login' }">Or Sign In</router-link>
+      <router-link :to="{ name: 'login' }">Or Sign In</router-link>
       <v-spacer />
       <v-btn @click="register" color="rgb(236, 91, 91)">Register</v-btn>
     </v-card-actions>

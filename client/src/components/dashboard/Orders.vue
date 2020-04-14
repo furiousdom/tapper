@@ -3,21 +3,20 @@
     <v-list>
       <v-list-item-group color="primary">
         <v-list-item
-          v-for="({ date, status, ProductOrders}, i) in orders"
-          :key="i">
+          v-for="({ id, date, status, ProductOrders}) in orders"
+          :key="id">
           <v-list-item-content>
-            <v-row
-              :align="align">
+            <v-row>
               <v-col cols="3">
                 <div>{{ status }}</div>
               </v-col>
-              <c-col cols="3">
+              <v-col cols="3">
                 <div>{{ formatDate(date) }}</div>
-              </c-col>
+              </v-col>
               <v-col cols="3">
                 <div
-                  v-for="{ id, quantity, Product } in ProductOrders"
-                  :key="id">
+                  v-for="{ id: productId, quantity, Product } in ProductOrders"
+                  :key="productId">
                   {{ quantity }}x
                   {{ Product.Brand.name }}
                   {{ Product.type }}

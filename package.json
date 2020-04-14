@@ -21,6 +21,7 @@
     "url": "https://github.com/furiousdom/ticketer/issues"
   },
   "dependencies": {
+    "@mdi/font": "^5.0.45",
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
