@@ -1,4 +1,4 @@
-const { Brand, Order, Product, ProductOrder } = require('../database');
+const { Brand, Order, Product, ProductOrder } = require('../shared/database');
 
 function fetch({ query: { userId } }, res) {
   const where = { userId };

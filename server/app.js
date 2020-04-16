@@ -2,17 +2,17 @@ const bodyParser = require('body-parser');
 const config = require('./config/config');
 const cors = require('cors');
 const express = require('express');
-const { sequelize } = require('./database/index');
+const { sequelize } = require('./shared/database/index');
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use('/auth', require('./routes/auth'));
-app.use('/order', require('./routes/order'));
-app.use('/brand', require('./routes/brand'));
-app.use('/product', require('./routes/product'));
+app.use('/auth', require('./auth'));
+app.use('/order', require('./order'));
+app.use('/brand', require('./brand'));
+app.use('/product', require('./product'));
 
 sequelize.sync()
   .then(() => {

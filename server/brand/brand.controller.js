@@ -1,4 +1,4 @@
-const { Brand } = require('../database');
+const { Brand } = require('../shared/database');
 
 async function fetch(_, res) {
   try {

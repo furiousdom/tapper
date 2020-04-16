@@ -1,4 +1,4 @@
-const config = require('../config/config');
+const config = require('../../config/config');
 const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize(
@@ -9,11 +9,11 @@ const sequelize = new Sequelize(
 );
 
 const db = {
-  Brand: sequelize.import('./models/Brand'),
-  Order: sequelize.import('./models/Order'),
-  Product: sequelize.import('./models/Product'),
-  ProductOrder: sequelize.import('./models/ProductOrder'),
-  User: sequelize.import('./models/User')
+  Brand: sequelize.import('../../brand/brand.model'),
+  Order: sequelize.import('../../order/order.model'),
+  Product: sequelize.import('../../product/product.model'),
+  ProductOrder: sequelize.import('./models/productOrder.model'),
+  User: sequelize.import('../../user/user.model')
 };
 
 Object.keys(db).forEach(modelName => {
