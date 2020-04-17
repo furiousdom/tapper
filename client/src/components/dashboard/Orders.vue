@@ -1,34 +1,44 @@
 <template>
-  <panel title="Orders">
-    <v-list>
-      <v-list-item-group color="primary">
-        <v-list-item
-          v-for="({ id, date, status, ProductOrders}) in orders"
-          :key="id">
-          <v-list-item-content>
-            <v-row>
-              <v-col cols="3">
-                <div>{{ status }}</div>
-              </v-col>
-              <v-col cols="3">
-                <div>{{ formatDate(date) }}</div>
-              </v-col>
-              <v-col cols="3">
-                <div
-                  v-for="{ id: productId, quantity, Product } in ProductOrders"
-                  :key="productId">
-                  {{ quantity }}x
-                  {{ Product.Brand.name }}
-                  {{ Product.type }}
-                  {{ Product.liters }}L
-                </div>
-              </v-col>
-            </v-row>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
-  </panel>
+  <div class="container">
+    <panel title="Orders">
+      <v-list>
+        <v-list-item-group color="primary">
+          <v-list-item
+            v-for="({ id, date, status, ProductOrders}) in orders"
+            :key="id">
+            <v-list-item-content>
+              <v-row>
+                <v-col cols="3">
+                  <div>{{ status }}</div>
+                </v-col>
+                <v-col cols="3">
+                  <div>{{ formatDate(date) }}</div>
+                </v-col>
+                <v-col cols="3">
+                  <div
+                    v-for="{ id: productId, quantity, Product } in ProductOrders"
+                    :key="productId">
+                    {{ quantity }}x
+                    {{ Product.Brand.name }}
+                    {{ Product.type }}
+                    {{ Product.liters }}L
+                  </div>
+                </v-col>
+              </v-row>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </panel>
+    <router-link :to="{ name: 'create-order' }">
+      <v-btn
+        color="rgb(236, 91, 91)"
+        fab dark absolute large
+        right class="mx-2">
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </router-link>
+  </div>
 </template>
 
 <script>

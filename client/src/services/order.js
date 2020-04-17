@@ -5,4 +5,8 @@ async function fetch(params = {}) {
   return data.map(order => ({ ...order, date: new Date(order.date) }));
 }
 
-export default { fetch };
+async function create(params) {
+  return await api.post('/order/create', params);
+}
+
+export default { create, fetch };

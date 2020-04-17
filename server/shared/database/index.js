@@ -8,19 +8,29 @@ const sequelize = new Sequelize(
   config.db.options
 );
 
-const db = {
-  Brand: sequelize.import('../../brand/brand.model'),
-  Order: sequelize.import('../../order/order.model'),
-  Product: sequelize.import('../../product/product.model'),
-  ProductOrder: sequelize.import('./models/productOrder.model'),
-  User: sequelize.import('../../user/user.model')
+// Database models
+const Brand = sequelize.import('../../brand/brand.model');
+const Order = sequelize.import('../../order/order.model');
+const Product = sequelize.import('../../product/product.model');
+const ProductOrder = sequelize.import('../../order/productOrder.model');
+const User = sequelize.import('../../user/user.model');
+
+const models = {
+  Brand,
+  Order,
+  Product,
+  ProductOrder,
+  User
 };
 
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) db[modelName].associate(db);
+Object.keys(models).forEach(modelName => {
+  if (models[modelName].associate) models[modelName].associate(models);
 });
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+const db = {
+  sequelize,
+  Sequelize,
+  ...models
+};
 
 module.exports = db;

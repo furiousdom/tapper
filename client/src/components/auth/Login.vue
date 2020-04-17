@@ -2,7 +2,7 @@
   <panel title="Log In">
     <v-card-text>
       <v-form>
-        <v-text-field v-model="username" label="Username" />
+        <v-text-field v-model="email" label="Email" />
         <v-text-field v-model="password" label="Password" type="password" />
       </v-form>
     </v-card-text>
@@ -22,15 +22,15 @@ import panel from '@/src/components/shared/Panel';
 export default {
   name: 'login',
   data: () => ({
-    username: '',
+    email: '',
     password: '',
     error: null
   }),
   methods: {
     ...mapActions('auth', ['login']),
     submit() {
-      const { username, password } = this;
-      return this.login({ username, password })
+      const { email, password } = this;
+      return this.login({ email, password })
         .then(data => this.$router.push({ name: 'orders' }));
     }
   },

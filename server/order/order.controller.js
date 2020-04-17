@@ -1,14 +1,14 @@
 const { Brand, Order, Product, ProductOrder } = require('../shared/database');
 
 function fetch({ query: { userId } }, res) {
-  const where = { userId };
+  const where = userId ? { userId } : null;
   const include = {
     model: ProductOrder,
     include: {
       model: Product,
       include: {
         model: Brand,
-        attributes: { exclude: ['liters'] }
+        attributes: { exclude: ['availableLiters'] }
       }
     }
   };

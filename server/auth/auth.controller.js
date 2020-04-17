@@ -4,11 +4,10 @@ const msg = require('../config/messages');
 const { User } = require('../shared/database');
 
 async function register(req, res) {
-  const { errors, body: { name, email, password, rePassword } } = req;
-  const payload = { errors, name, email, password, rePassword };
-  if (errors.length) return res.send(payload);
+  const { errors, body } = req;
+  if (errors.length) return res.send({ errors, ...body });
   try {
-    const user = await User.create(req.body);
+    const user = await User.create(body);
     if (user) res.sendStatus(201);
   } catch (err) {
     res.status(400).send(err);
@@ -17,8 +16,8 @@ async function register(req, res) {
 
 async function login(req, res) {
   try {
-    const { username, password } = req.body;
-    const user = await User.findOne({ where: { username } });
+    const { email, password } = req.body;
+    const user = await User.findOne({ where: { email } });
     if (!user) return res.status(403).send({ error: msg.loginFailed });
     const isPasswordValid = await user.authenticate(password);
     if (!isPasswordValid) return res.status(403).send({ error: msg.wrongPassword });
@@ -35,10 +34,11 @@ async function login(req, res) {
 module.exports = { errorHandler, login, register };
 
 function errorHandler(req, _, next) {
-  const { username, password } = req.body;
+  const { email, password, rePassword } = req.body;
   const errors = [];
-  if (!username || !password) errors.push(msg.fillFields);
+  if (!email || !password) errors.push(msg.fillFields);
   if (password.length < 8) errors.push(msg.shortPass);
+  if (password !== rePassword) errors.push(msg.failedMatch);
   req.errors = errors;
   next();
 }

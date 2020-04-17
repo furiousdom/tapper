@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const PRODUCT_TYPES = ['USER', 'ADMIN'];
 
 const SALT = bcrypt.genSaltSync(10);
 const encrypt = password => bcrypt.hash(password, SALT);
@@ -22,11 +23,25 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       field: 'deleted_at'
     },
-    username: {
+    email: {
       type: DataTypes.STRING,
-      unique: true
+      unique: true,
+      validate: {
+        isEmail: true
+      }
     },
-    password: DataTypes.STRING
+    password: DataTypes.STRING,
+    role: DataTypes.ENUM(PRODUCT_TYPES),
+    name: DataTypes.STRING,
+    address: DataTypes.STRING,
+    contactName: {
+      type: DataTypes.STRING,
+      field: 'contact_name'
+    },
+    contactNumber: {
+      type: DataTypes.STRING,
+      field: 'contact_number'
+    }
   }, {
     hooks: {
       beforeCreate: encryptPassword
