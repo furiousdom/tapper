@@ -18,11 +18,11 @@ const router = new VueRouter({
     name: 'auth',
     component: Auth,
     children: [{
-      path: '/register',
+      path: 'register',
       name: 'register',
       component: Register
     }, {
-      path: '/login',
+      path: 'login',
       name: 'login',
       component: Login
     }]
@@ -32,11 +32,11 @@ const router = new VueRouter({
     component: Dashboard,
     meta: { auth: true },
     children: [{
-      path: '/orders',
+      path: 'orders',
       name: 'orders',
       component: Orders
     }, {
-      path: '/orders/create',
+      path: 'create',
       name: 'create-order',
       component: CreateOrder
     }]
@@ -46,8 +46,7 @@ const router = new VueRouter({
 router.beforeEach((to, _from, next) => {
   const user = get(store.state, 'auth.user');
   const isNotAuthenticated = to.matched.some(it => it.meta.auth) && !user;
-  if (isNotAuthenticated) return next({ name: 'login' });
-  return next();
+  return isNotAuthenticated ? next({ name: 'login' }) : next();
 });
 
 export default router;

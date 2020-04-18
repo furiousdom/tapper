@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <navbar v-if="user" />
-    <router-view :key="$route.path" />
+    <router-view />
   </v-app>
 </template>
 

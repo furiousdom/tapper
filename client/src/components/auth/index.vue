@@ -6,7 +6,7 @@
         <h2>Please log in or register to continue.</h2>
       </v-flex>
       <v-flex xs6>
-        <router-view :key="$route.path" />
+        <router-view />
       </v-flex>
     </v-layout>
   </v-content>
