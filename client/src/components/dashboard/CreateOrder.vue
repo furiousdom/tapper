@@ -21,10 +21,10 @@
                       label="Available Products"
                       item-value="id"
                       item-text="text"
-                      dense solo />
+                      dense outlined />
                   </v-col>
                   <v-col cols="3">
-                    <v-select v-model="item.quantity" :items="numbers" label="Quantity" dense solo />
+                    <v-select v-model="item.quantity" :items="quantityItems" label="Quantity" dense outlined />
                   </v-col>
                 </v-row>
               </v-form>
@@ -49,6 +49,8 @@ import orderApi from '@/src/services/order';
 import panel from '@/src/components/shared/Panel';
 import productApi from '@/src/services/product';
 
+const setOrderItem = () => ({ productId: null, quantity: null });
+
 export default {
   name: 'create-order',
   data: () => ({
@@ -56,32 +58,27 @@ export default {
     quantities: [],
     date: null,
     status: false,
-    orderItems: [
-      {
-        productId: null,
-        quantity: null
-      }
-    ]
+    orderItems: [setOrderItem()]
   }),
-  computed: mapState('auth', ['user']),
+  computed: {
+    ...mapState('auth', ['user']),
+    quantityItems: () => [1, 2, 3, 4, 5, 6]
+  },
   methods: {
     submit() {
       const { id: userId } = this.user;
       const { orderItems } = this;
-      orderApi.create({ userId, products: orderItems });
+      return orderApi.create({ userId, products: orderItems });
     },
     addProduct() {
-      this.orderItems.push({ productId: null, quantity: null });
+      this.orderItems.push(setOrderItem);
     }
   },
-  created: function () {
-    this.numbers = [1, 2, 3, 4, 5, 6];
-    return productApi.fetch()
-      .then(({ data: orderItems }) => {
-        orderItems.forEach(({ id, type, liters, Brand }) => {
-          this.availableProducts.push({ id, text: `${Brand.name} ${type} ${liters}L` });
-        });
-      });
+  async created() {
+    const { data: orderItems } = await productApi.fetch();
+    orderItems.forEach(({ id, type, liters, Brand }) => {
+      this.availableProducts.push({ id, text: `${Brand.name} ${type} ${liters}L` });
+    });
   },
   components: { panel }
 };

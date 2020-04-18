@@ -31,7 +31,7 @@ export default {
     email: '',
     password: '',
     rePassword: '',
-    role: 'CLIENT',
+    role: 'USER',
     name: '',
     address: '',
     contactName: '',
@@ -42,7 +42,7 @@ export default {
     register() {
       const { error, ...payload } = this;
       console.log(payload);
-      // return api.register({ email, password });
+      // return api.register(payload);
     }
   },
   components: { panel }

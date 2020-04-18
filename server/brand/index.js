@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 router
-  .get('/all', fetch)
+  .get('/', fetch)
   .post('/create', create)
   .patch('/:id', update)
   .delete('/:id', remove);
