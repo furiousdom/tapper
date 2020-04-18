@@ -2,14 +2,14 @@
   <panel title="Register">
     <v-card-text>
       <v-form>
-        <v-text-field v-model="email" label="Email" />
-        <v-text-field v-model="password" label="Password" type="password" />
-        <v-text-field v-model="rePassword" label="Confirm Password" type="password" />
-        <v-text-field v-model="role" label="Role" disabled />
-        <v-text-field v-model="name" label="Name" />
-        <v-text-field v-model="address" label="Address" />
-        <v-text-field v-model="contactName" label="Contact Name" />
-        <v-text-field v-model="contactNumber" label="Contact Number" />
+        <v-text-field v-model="user.email" label="Email" />
+        <v-text-field v-model="user.password" label="Password" type="password" />
+        <v-text-field v-model="user.rePassword" label="Confirm Password" type="password" />
+        <v-text-field v-model="user.role" label="Role" disabled />
+        <v-text-field v-model="user.name" label="Name" />
+        <v-text-field v-model="user.address" label="Address" />
+        <v-text-field v-model="user.contactName" label="Contact Name" />
+        <v-text-field v-model="user.contactNumber" label="Contact Number" />
       </v-form>
     </v-card-text>
     <v-card-actions>
@@ -22,27 +22,28 @@
 </template>
 
 <script>
-// import api from '@/src/services/auth.js';
+import api from '@/src/services/auth.js';
 import panel from '@/src/components/shared/Panel';
 
 export default {
   name: 'register',
   data: () => ({
-    email: '',
-    password: '',
-    rePassword: '',
-    role: 'USER',
-    name: '',
-    address: '',
-    contactName: '',
-    contactNumber: '',
-    error: null
+    errors: null,
+    user: {
+      email: '',
+      password: '',
+      rePassword: '',
+      role: 'USER',
+      name: '',
+      address: '',
+      contactName: '',
+      contactNumber: ''
+    }
   }),
   methods: {
     register() {
-      const { error, ...payload } = this;
-      console.log(payload);
-      // return api.register(payload);
+      const { user } = this;
+      return api.register(user);
     }
   },
   components: { panel }
