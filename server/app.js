@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 const config = require('./config/config');
 const cors = require('cors');
 const express = require('express');
+const router = require('./router');
 const { sequelize } = require('./shared/database/index');
 
 const app = express();
@@ -9,10 +10,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use('/auth', require('./auth'));
-app.use('/order', require('./order'));
-app.use('/brand', require('./brand'));
-app.use('/product', require('./product'));
+app.use('/', router);
 
 sequelize.sync()
   .then(() => {

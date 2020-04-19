@@ -6,4 +6,7 @@ router
   .post('/register', errorHandler, register)
   .post('/login', login);
 
-module.exports = router;
+module.exports = {
+  path: '/auth',
+  router
+};

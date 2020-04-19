@@ -8,4 +8,7 @@ router
   .patch('/:id', update)
   .delete('/:id', remove);
 
-module.exports = router;
+module.exports = {
+  path: '/product',
+  router
+};
