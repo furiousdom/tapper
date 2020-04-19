@@ -1,4 +1,5 @@
 const { Brand, Order, Product, ProductOrder } = require('../shared/database');
+const status = require('http-status-codes');
 
 function fetch({ query: { userId } }, res) {
   const where = userId ? { userId } : null;
@@ -14,7 +15,7 @@ function fetch({ query: { userId } }, res) {
   };
   return Order.findAll({ where, include })
     .then(orders => res.send(orders))
-    .catch(err => res.status(400).send(err));
+    .catch(err => res.status(status.BAD_REQUEST).send(err));
 }
 
 function create({ body: { userId, products } }, res) {
@@ -29,8 +30,8 @@ function create({ body: { userId, products } }, res) {
       }), { returning: true })
         .then(products => order.setProductOrders(products));
     })
-    .then(() => res.sendStatus(200))
-    .catch(err => res.status(400).send(err));
+    .then(() => res.sendStatus(status.CREATED))
+    .catch(err => res.status(status.BAD_REQUEST).send(err));
 }
 
 function update(req, res) {
@@ -48,8 +49,8 @@ function update(req, res) {
       }), { returning: true })
         .then(products => order.setProductOrders(products));
     })
-    .then(() => res.sendStatus(200))
-    .catch(err => res.send(err));
+    .then(() => res.sendStatus(status.OK))
+    .catch(err => res.status(status.BAD_REQUEST).send(err));
 }
 
 function remove({ params: { id } }, res) {
@@ -58,8 +59,8 @@ function remove({ params: { id } }, res) {
       ProductOrder.destroy({ where: { orderId: order.id } })
         .then(() => order.destroy());
     })
-    .then(() => res.sendStatus(200))
-    .catch(err => res.send(err));
+    .then(() => res.sendStatus(status.OK))
+    .catch(err => res.status(status.BAD_REQUEST).send(err));
 }
 
 module.exports = { fetch, create, update, remove };

@@ -1,10 +1,10 @@
 import api from './axios';
-import path from 'path';
+import { join } from 'path';
 
 const urls = {
   root: '/auth',
-  register: () => path.join(urls.root, '/register'),
-  login: () => path.join(urls.root, '/login')
+  register: () => join(urls.root, '/register'),
+  login: () => join(urls.root, '/login')
 };
 
 function register(credentials) {
