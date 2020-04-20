@@ -1,8 +1,8 @@
-import api from './axios';
+import api from './request';
 import { join } from 'path';
 
 const urls = {
-  root: '/auth',
+  root: '/user',
   register: () => join(urls.root, '/register'),
   login: () => join(urls.root, '/login')
 };

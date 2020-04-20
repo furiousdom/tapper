@@ -1,4 +1,4 @@
-import api from './axios';
+import api from './request';
 
 const urls = {
   root: '/product'

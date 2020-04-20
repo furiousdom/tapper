@@ -1,4 +1,4 @@
-import api from './axios';
+import api from './request';
 import { join } from 'path';
 
 const urls = {

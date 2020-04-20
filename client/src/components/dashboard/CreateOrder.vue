@@ -68,7 +68,10 @@ export default {
     submit() {
       const { id: userId } = this.user;
       const { orderItems } = this;
-      return orderApi.create({ userId, products: orderItems });
+      return orderApi.create({ userId, products: orderItems })
+        .then(({ data }) => {
+          if (data === 'Created') this.$router.push({ name: 'orders' });
+        });
     },
     addProduct() {
       this.orderItems.push(setOrderItem);
