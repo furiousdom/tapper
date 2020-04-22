@@ -4,15 +4,15 @@
       <v-list>
         <v-list-item-group color="primary">
           <v-list-item
-            v-for="({ id, date, status, ProductOrders}) in orders"
+            v-for="({ id, createdAt, delivered, ProductOrders}) in orders"
             :key="id">
             <v-list-item-content>
               <v-row>
                 <v-col cols="3">
-                  <div>{{ status }}</div>
+                  <div>{{ delivered }}</div>
                 </v-col>
                 <v-col cols="3">
-                  <div>{{ formatDate(date) }}</div>
+                  <div>{{ formatDate(createdAt) }}</div>
                 </v-col>
                 <v-col cols="3">
                   <div

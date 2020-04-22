@@ -10,7 +10,7 @@
       <v-spacer />
       <router-link :to="{ name: 'register' }">Or Sign Up</router-link>
       <v-spacer />
-      <v-btn @click="submit" color="rgb(236, 91, 91)">Login</v-btn>
+      <v-btn @click="submit" dark color="rgb(236, 91, 91)">Login</v-btn>
     </v-card-actions>
   </panel>
 </template>

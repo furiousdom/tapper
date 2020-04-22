@@ -19,7 +19,7 @@ function fetch({ query: { userId } }, res) {
 }
 
 function create({ body: { userId, products } }, res) {
-  return Order.create({ date: new Date(), status: false, userId })
+  return Order.create({ delivered: false, userId })
     .then(order => {
       return ProductOrder.bulkCreate(products.map(({ productId, quantity }) => {
         return {
@@ -35,10 +35,10 @@ function create({ body: { userId, products } }, res) {
 }
 
 function update(req, res) {
-  const { params: { id }, body: { status, products } } = req;
+  const { params: { id }, body: { delivered, products } } = req;
   return Order.findByPk(id, { include: ProductOrder })
     .then(async order => {
-      await order.update({ status });
+      await order.update({ delivered });
       ProductOrder.destroy({ where: { orderId: id } });
       ProductOrder.bulkCreate(products.map(({ productId, quantity }) => {
         return {

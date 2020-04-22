@@ -5,7 +5,6 @@
         <v-text-field v-model="user.email" label="Email" />
         <v-text-field v-model="user.password" label="Password" type="password" />
         <v-text-field v-model="user.rePassword" label="Confirm Password" type="password" />
-        <v-text-field v-model="user.role" label="Role" disabled />
         <v-text-field v-model="user.name" label="Name" />
         <v-text-field v-model="user.address" label="Address" />
         <v-text-field v-model="user.contactName" label="Contact Name" />
@@ -16,7 +15,7 @@
       <v-spacer />
       <router-link :to="{ name: 'login' }">Or Sign In</router-link>
       <v-spacer />
-      <v-btn @click="register" color="rgb(236, 91, 91)">Register</v-btn>
+      <v-btn @click="register" dark color="rgb(236, 91, 91)">Register</v-btn>
     </v-card-actions>
   </panel>
 </template>

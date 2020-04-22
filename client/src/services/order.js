@@ -8,7 +8,7 @@ const urls = {
 
 async function fetch(params = {}) {
   const { data } = await api.get(urls.root, { params });
-  return data.map(order => ({ ...order, date: new Date(order.date) }));
+  return data.map(order => ({ ...order, createdAt: new Date(order.createdAt) }));
 }
 
 function create(params) {

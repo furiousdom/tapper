@@ -24,7 +24,11 @@
                       dense outlined />
                   </v-col>
                   <v-col cols="3">
-                    <v-select v-model="item.quantity" :items="quantityItems" label="Quantity" dense outlined />
+                    <v-select
+                      v-model="item.quantity"
+                      :items="quantityItems"
+                      label="Quantity"
+                      dense outlined />
                   </v-col>
                 </v-row>
               </v-form>
@@ -56,8 +60,7 @@ export default {
   data: () => ({
     availableProducts: [],
     quantities: [],
-    date: null,
-    status: false,
+    delivered: false,
     orderItems: [setOrderItem()]
   }),
   computed: {

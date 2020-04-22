@@ -12,8 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       field: 'deleted_at'
     },
-    date: DataTypes.DATE,
-    status: DataTypes.BOOLEAN
+    delivered: DataTypes.BOOLEAN
   });
 
   Order.associate = models => {
