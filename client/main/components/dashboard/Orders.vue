@@ -42,10 +42,10 @@
 </template>
 
 <script>
-import api from '@/src/services/order';
+import api from '@/main/services/order';
 import { format } from 'date-fns';
 import { mapState } from 'vuex';
-import panel from '@/src/components/shared/Panel';
+import panel from '@/main/components/shared/Panel';
 
 export default {
   name: 'orders',

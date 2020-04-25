@@ -49,9 +49,9 @@
 
 <script>
 import { mapState } from 'vuex';
-import orderApi from '@/src/services/order';
-import panel from '@/src/components/shared/Panel';
-import productApi from '@/src/services/product';
+import orderApi from '@/main/services/order';
+import panel from '@/main/components/shared/Panel';
+import productApi from '@/main/services/product';
 
 const setOrderItem = () => ({ productId: null, quantity: null });
 

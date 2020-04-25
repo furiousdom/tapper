@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import api from '@/src/services/auth.js';
-import panel from '@/src/components/shared/Panel';
+import api from '@/main/services/auth.js';
+import panel from '@/main/components/shared/Panel';
 
 export default {
   name: 'register',

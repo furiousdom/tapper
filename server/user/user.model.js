@@ -49,7 +49,9 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   User.associate = models => {
-    User.hasMany(models.Order, { foreignKey: { name: 'userId', field: 'user_id' } });
+    User.hasMany(models.Order, {
+      foreignKey: { name: 'userId', field: 'user_id' }
+    });
   };
 
   User.prototype.authenticate = function (password) {

@@ -17,7 +17,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import panel from '@/src/components/shared/Panel';
+import panel from '@/main/components/shared/Panel';
 
 export default {
   name: 'login',

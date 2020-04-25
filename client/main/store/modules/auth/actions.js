@@ -1,4 +1,4 @@
-import api from '@/src/services/auth';
+import api from '@/main/services/auth';
 
 export const login = ({ commit }, credentials) => {
   return api.login(credentials)
