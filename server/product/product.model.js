@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: { name: 'productId', field: 'product_id' }
     });
     Product.belongsTo(models.Brand, {
+      as: 'brand',
       foreignKey: { name: 'brandId', field: 'brand_id' }
     });
   };

@@ -5,10 +5,13 @@ function fetch({ query: { userId } }, res) {
   const where = userId ? { userId } : null;
   const include = {
     model: ProductOrder,
+    as: 'products',
     include: {
       model: Product,
+      as: 'product',
       include: {
         model: Brand,
+        as: 'brand',
         attributes: { exclude: ['availableLiters'] }
       }
     }
