@@ -1,36 +1,39 @@
+const { Model } = require('sequelize');
 const PRODUCT_TYPES = ['KEG', 'BOTTLES'];
 
-module.exports = (sequelize, DataTypes) => {
-  const Product = sequelize.define('Product', {
-    createdAt: {
-      type: DataTypes.DATE,
-      field: 'created_at'
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      field: 'updated_at'
-    },
-    deletedAt: {
-      type: DataTypes.DATE,
-      field: 'deleted_at'
-    },
-    type: DataTypes.ENUM(PRODUCT_TYPES),
-    liters: DataTypes.INTEGER
-  });
+class Product extends Model {
+  static fields({ DATE, ENUM, INTEGER }) {
+    return {
+      type: ENUM(PRODUCT_TYPES),
+      liters: INTEGER,
+      createdAt: {
+        type: DATE,
+        field: 'created_at'
+      },
+      updatedAt: {
+        type: DATE,
+        field: 'updated_at'
+      },
+      deletedAt: {
+        type: DATE,
+        field: 'deleted_at'
+      }
+    };
+  }
 
-  Product.associate = models => {
-    Product.belongsToMany(models.Order, {
-      through: models.ProductOrder,
+  associate({ Brand, Order, ProductOrder }) {
+    this.belongsToMany(Order, {
+      through: ProductOrder,
       foreignKey: { name: 'productId', field: 'product_id' }
     });
-    Product.hasMany(models.ProductOrder, {
+    this.hasMany(ProductOrder, {
       foreignKey: { name: 'productId', field: 'product_id' }
     });
-    Product.belongsTo(models.Brand, {
+    this.belongsTo(Brand, {
       as: 'brand',
       foreignKey: { name: 'brandId', field: 'brand_id' }
     });
-  };
+  }
+}
 
-  return Product;
-};
+module.exports = Product;

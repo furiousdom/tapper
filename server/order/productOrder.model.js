@@ -1,29 +1,32 @@
-module.exports = (sequelize, DataTypes) => {
-  const ProductOrder = sequelize.define('ProductOrder', {
-    createdAt: {
-      type: DataTypes.DATE,
-      field: 'created_at'
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      field: 'updated_at'
-    },
-    deletedAt: {
-      type: DataTypes.DATE,
-      field: 'deleted_at'
-    },
-    quantity: DataTypes.INTEGER
-  });
+const { Model } = require('sequelize');
 
-  ProductOrder.associate = models => {
-    ProductOrder.belongsTo(models.Product, {
+class ProductOrder extends Model {
+  static fields({ DATE, INTEGER }) {
+    return {
+      quantity: INTEGER,
+      createdAt: {
+        type: DATE,
+        field: 'created_at'
+      },
+      updatedAt: {
+        type: DATE,
+        field: 'updated_at'
+      },
+      deletedAt: {
+        type: DATE,
+        field: 'deleted_at'
+      }
+    };
+  }
+
+  associate({ Order, Product }) {
+    this.belongsTo(Product, {
       as: 'product',
       foreignKey: { name: 'productId', field: 'product_id' }
     });
-    ProductOrder.belongsTo(models.Order, {
+    this.belongsTo(Order, {
       foreignKey: { name: 'orderId', field: 'order_id' }
     });
-  };
-
-  return ProductOrder;
-};
+  }
+}
+module.exports = ProductOrder;

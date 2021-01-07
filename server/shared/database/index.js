@@ -1,4 +1,7 @@
 const config = require('../../config/config');
+const forEach = require('lodash/forEach');
+const Hooks = require('./hooks');
+const invoke = require('lodash/invoke');
 const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize(
@@ -8,24 +11,36 @@ const sequelize = new Sequelize(
   config.db.options
 );
 
-// Database models
-const Brand = sequelize.import('../../brand/brand.model');
-const Order = sequelize.import('../../order/order.model');
-const Product = sequelize.import('../../product/product.model');
-const ProductOrder = sequelize.import('../../order/productOrder.model');
-const User = sequelize.import('../../user/user.model');
+/* eslint-disable require-sort/require-sort */
+const Brand = require('../../brand/brand.model');
+const Order = require('../../order/order.model');
+const Product = require('../../product/product.model');
+const ProductOrder = require('../../order/productOrder.model');
+const User = require('../../user/user.model');
 
 const models = {
-  Brand,
-  Order,
-  Product,
-  ProductOrder,
-  User
+  Brand: defineModel(Brand),
+  Order: defineModel(Order),
+  Product: defineModel(Product),
+  ProductOrder: defineModel(ProductOrder),
+  User: defineModel(User)
 };
 
-Object.keys(models).forEach(modelName => {
-  if (models[modelName].associate) models[modelName].associate(models);
+function defineModel(Model, connection = sequelize) {
+  const { DataTypes } = Sequelize;
+  const fields = invoke(Model, 'fields', DataTypes, this.sequelize) || {};
+  return Model.init(fields, { sequelize: connection });
+}
+
+forEach(models, model => {
+  invoke(model, 'associate', models);
+  addHooks(model, Hooks);
 });
+
+function addHooks(model, Hooks) {
+  const hooks = invoke(model, 'hooks', Hooks);
+  forEach(hooks, (it, type) => model.addHook(type, it));
+}
 
 const db = {
   sequelize,

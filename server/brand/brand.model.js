@@ -1,29 +1,33 @@
-module.exports = (sequelize, DataTypes) => {
-  const Brand = sequelize.define('Brand', {
-    createdAt: {
-      type: DataTypes.DATE,
-      field: 'created_at'
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      field: 'updated_at'
-    },
-    deletedAt: {
-      type: DataTypes.DATE,
-      field: 'deleted_at'
-    },
-    name: DataTypes.STRING,
-    availableLiters: {
-      type: DataTypes.INTEGER,
-      field: 'available_liters'
-    }
-  });
+const { Model } = require('sequelize');
 
-  Brand.associate = models => {
-    Brand.hasMany(models.Product, {
+class Brand extends Model {
+  static fields({ DATE, INTEGER, STRING }) {
+    return {
+      name: STRING,
+      availableLiters: {
+        type: INTEGER,
+        field: 'available_liters'
+      },
+      createdAt: {
+        type: DATE,
+        field: 'created_at'
+      },
+      updatedAt: {
+        type: DATE,
+        field: 'updated_at'
+      },
+      deletedAt: {
+        type: DATE,
+        field: 'deleted_at'
+      }
+    };
+  }
+
+  associate({ Product }) {
+    this.hasMany(Product, {
       foreignKey: { name: 'brandId', field: 'brand_id' }
     });
-  };
+  }
+}
 
-  return Brand;
-};
+module.exports = Brand;

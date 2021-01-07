@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const { Model } = require('sequelize');
 const PRODUCT_TYPES = ['USER', 'ADMIN'];
 
 const SALT = bcrypt.genSaltSync(10);
@@ -9,55 +10,64 @@ function encryptPassword(user) {
     .then(hash => user.setDataValue('password', hash));
 }
 
-module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
-    createdAt: {
-      type: DataTypes.DATE,
-      field: 'created_at'
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      field: 'updated_at'
-    },
-    deletedAt: {
-      type: DataTypes.DATE,
-      field: 'deleted_at'
-    },
-    email: {
-      type: DataTypes.STRING,
-      unique: true,
-      validate: {
-        isEmail: true
+class User extends Model {
+  static fields({ DATE, ENUM, STRING }) {
+    return {
+      email: {
+        type: STRING,
+        set(email) {
+          this.setDataValue('email', email.toLowerCase());
+        },
+        unique: true,
+        validate: {
+          isEmail: true
+        }
+      },
+      password: STRING,
+      role: ENUM(PRODUCT_TYPES),
+      name: STRING,
+      address: STRING,
+      contactName: {
+        type: STRING,
+        field: 'contact_name'
+      },
+      contactNumber: {
+        type: STRING,
+        field: 'contact_number'
+      },
+      createdAt: {
+        type: DATE,
+        field: 'created_at'
+      },
+      updatedAt: {
+        type: DATE,
+        field: 'updated_at'
+      },
+      deletedAt: {
+        type: DATE,
+        field: 'deleted_at'
       }
-    },
-    password: DataTypes.STRING,
-    role: DataTypes.ENUM(PRODUCT_TYPES),
-    name: DataTypes.STRING,
-    address: DataTypes.STRING,
-    contactName: {
-      type: DataTypes.STRING,
-      field: 'contact_name'
-    },
-    contactNumber: {
-      type: DataTypes.STRING,
-      field: 'contact_number'
-    }
-  }, {
-    hooks: {
-      beforeCreate: encryptPassword
-    }
-  });
+    };
+  }
 
-  User.associate = models => {
-    User.hasMany(models.Order, {
+  static associate({ Order }) {
+    this.hasMany(Order, {
       foreignKey: { name: 'userId', field: 'user_id' }
     });
-  };
+  }
 
-  User.prototype.authenticate = function (password) {
+  static hooks(Hooks) {
+    return {
+      [Hooks.beforeCreate](user) {
+        return encryptPassword(user);
+      }
+    };
+  }
+
+  authenticate(password) {
     return bcrypt.compare(password, this.password)
       .then(isMatch => isMatch ? this : false);
-  };
+  }
+}
 
-  return User;
-};
+module.exports = User;
