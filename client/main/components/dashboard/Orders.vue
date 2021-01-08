@@ -4,7 +4,7 @@
       <v-list>
         <v-list-item-group color="primary">
           <v-list-item
-            v-for="({ id, createdAt, delivered, ProductOrders}) in orders"
+            v-for="({ id, createdAt, delivered, products}) in orders"
             :key="id">
             <v-list-item-content>
               <v-row>
@@ -16,12 +16,12 @@
                 </v-col>
                 <v-col cols="3">
                   <div
-                    v-for="{ id: productId, quantity, Product } in ProductOrders"
+                    v-for="{ id: productId, quantity, product } in products"
                     :key="productId">
                     {{ quantity }}x
-                    {{ Product.Brand.name }}
-                    {{ Product.type }}
-                    {{ Product.liters }}L
+                    {{ product.brand.name }}
+                    {{ product.type }}
+                    {{ product.liters }}L
                   </div>
                 </v-col>
               </v-row>

@@ -21,7 +21,7 @@ class Product extends Model {
     };
   }
 
-  associate({ Brand, Order, ProductOrder }) {
+  static associate({ Brand, Order, ProductOrder }) {
     this.belongsToMany(Order, {
       through: ProductOrder,
       foreignKey: { name: 'productId', field: 'product_id' }

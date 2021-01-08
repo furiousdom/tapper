@@ -23,7 +23,7 @@ class Brand extends Model {
     };
   }
 
-  associate({ Product }) {
+  static associate({ Product }) {
     this.hasMany(Product, {
       foreignKey: { name: 'brandId', field: 'brand_id' }
     });
