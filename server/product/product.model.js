@@ -30,7 +30,6 @@ class Product extends Model {
       foreignKey: { name: 'productId', field: 'product_id' }
     });
     this.belongsTo(Brand, {
-      as: 'brand',
       foreignKey: { name: 'brandId', field: 'brand_id' }
     });
   }

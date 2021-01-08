@@ -3,7 +3,7 @@ const status = require('http-status-codes');
 
 async function fetch(_, res) {
   try {
-    const include = { model: Brand, as: 'brand' };
+    const include = { model: Brand };
     res.send(await Product.findAll({ include }));
   } catch (error) {
     res.status(status.INTERNAL_SERVER_ERROR).send({ error });

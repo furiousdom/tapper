@@ -25,7 +25,6 @@ class Order extends Model {
       foreignKey: { name: 'orderId', field: 'order_id' }
     });
     this.hasMany(ProductOrder, {
-      as: 'products',
       foreignKey: { name: 'orderId', field: 'order_id' }
     });
     this.belongsTo(User, {
