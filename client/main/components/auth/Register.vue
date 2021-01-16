@@ -1,33 +1,32 @@
 <template>
-  <panel title="Register">
-    <v-card-text>
-      <v-form>
-        <v-text-field v-model="user.email" label="Email" />
-        <v-text-field v-model="user.password" label="Password" type="password" />
-        <v-text-field v-model="user.rePassword" label="Confirm Password" type="password" />
-        <v-text-field v-model="user.name" label="Name" />
-        <v-text-field v-model="user.address" label="Address" />
-        <v-text-field v-model="user.contactName" label="Contact Name" />
-        <v-text-field v-model="user.contactNumber" label="Contact Number" />
-      </v-form>
-    </v-card-text>
-    <v-card-actions>
-      <v-spacer />
-      <router-link :to="{ name: 'login' }">Or Sign In</router-link>
-      <v-spacer />
-      <v-btn @click="register" dark color="rgb(236, 91, 91)">Register</v-btn>
-    </v-card-actions>
-  </panel>
+  <div class="form-container">
+    <v-card-title class="justify-center">Register</v-card-title>
+    <v-form>
+      <v-text-field v-model="user.email" label="Email" outlined />
+      <v-text-field v-model="user.password" label="Password" type="password" outlined />
+      <v-text-field v-model="user.rePassword" label="Confirm Password" type="password" outlined />
+      <v-text-field v-model="user.name" label="Name" outlined />
+      <v-text-field v-model="user.address" label="Address" outlined />
+      <v-text-field v-model="user.contactName" label="Contact Name" outlined />
+      <v-text-field v-model="user.contactNumber" label="Contact Number" outlined />
+      <v-checkbox v-model="showPassword" label="Show Password" />
+      <div class="form-actions d-flex justify-space-between">
+        <v-btn :to="{ name: 'login' }" large text>Sign In</v-btn>
+        <v-spacer />
+        <v-btn @click="register" dark large>Register</v-btn>
+      </div>
+    </v-form>
+  </div>
 </template>
 
 <script>
 import api from '@/main/services/auth.js';
-import panel from '@/main/components/shared/Panel';
 
 export default {
   name: 'register',
   data: () => ({
     errors: null,
+    showPassword: false,
     user: {
       email: '',
       password: '',
@@ -44,7 +43,12 @@ export default {
       const { user } = this;
       return api.register(user);
     }
-  },
-  components: { panel }
+  }
 };
 </script>
+
+<style lang="scss" scoped>
+.form-container {
+  padding: 0 2rem 5rem 2rem;
+}
+</style>

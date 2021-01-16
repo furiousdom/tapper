@@ -1,20 +1,16 @@
 <template>
-  <div class="container">
-    <router-link :to="{ name: 'orders' }">
-      <v-btn>
-        <v-icon>mdi-arrow-left</v-icon>
-      </v-btn>
-    </router-link>
-    <panel title="Create Order">
-      <v-list>
-        <v-list-item-group color="primary">
-          <v-list-item
-            v-for="item in orderItems"
-            :key="item.productId">
-            <v-list-item-content>
-              <v-form>
+  <div class="form-container">
+    <v-card max-width="700px" outlined>
+      <v-card-title class="justify-center">Create Order</v-card-title>
+      <v-form>
+        <v-list>
+          <v-list-item-group color="primary">
+            <v-list-item
+              v-for="item in orderItems"
+              :key="item.productId">
+              <v-list-item-content>
                 <v-row>
-                  <v-col>
+                  <v-col cols="12" md="9">
                     <v-select
                       v-model="item.productId"
                       :items="availableProducts"
@@ -23,7 +19,7 @@
                       item-text="text"
                       dense outlined />
                   </v-col>
-                  <v-col cols="3">
+                  <v-col cols="12" md="3">
                     <v-select
                       v-model="item.quantity"
                       :items="quantityItems"
@@ -31,26 +27,28 @@
                       dense outlined />
                   </v-col>
                 </v-row>
-              </v-form>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-item-group>
-        <v-btn @click="addProduct">
-          <v-icon>mdi-plus</v-icon>
-        </v-btn>
-      </v-list>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+        <div class="new-product">
+          <v-spacer />
+          <v-btn @click="addProduct" icon>
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+        </div>
+      </v-form>
       <v-card-actions>
         <v-spacer />
-        <v-btn @click="submit" dark color="rgb(236, 91, 91)">Submit Order</v-btn>
+        <v-btn @click="submit" dark>Submit Order</v-btn>
       </v-card-actions>
-    </panel>
+    </v-card>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import orderApi from '@/main/services/order';
-import panel from '@/main/components/shared/Panel';
 import productApi from '@/main/services/product';
 
 const setOrderItem = () => ({ productId: null, quantity: null });
@@ -85,13 +83,16 @@ export default {
     orderItems.forEach(({ id, type, liters, Brand }) => {
       this.availableProducts.push({ id, text: `${Brand.name} ${type} ${liters}L` });
     });
-  },
-  components: { panel }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 a {
   text-decoration: none !important;
+}
+
+.form-container {
+  padding: 0 2rem 5rem 2rem;
 }
 </style>

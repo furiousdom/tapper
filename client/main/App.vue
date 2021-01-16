@@ -1,17 +1,19 @@
 <template>
-  <v-app>
-    <navbar v-if="user" />
-    <router-view />
+  <v-app id="inspire">
+    <Frame v-if="user" />
+    <v-main class="grey lighten-4">
+      <router-view />
+    </v-main>
   </v-app>
 </template>
 
 <script>
+import Frame from './components/shared/Frame';
 import { mapState } from 'vuex';
-import navbar from './components/Navbar';
 
 export default {
   name: 'app',
   computed: mapState('auth', ['user']),
-  components: { navbar }
+  components: { Frame }
 };
 </script>

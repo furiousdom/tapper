@@ -1,27 +1,17 @@
 <template>
-  <v-content>
-    <v-container class="fill-height" fluid>
-      <v-row align="center" justify="center">
-        <v-col>
-          <h1 class="text">Welcome to TAP B ticketer.</h1>
-          <h2 class="text">Please log in or register to continue.</h2>
-        </v-col>
-        <v-col>
-          <router-view />
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-content>
+  <v-container>
+    <v-card max-width="500px" outlined>
+      <v-card-actions class="justify-center mt-4">
+        <v-img src="@/main/assets/tapb-logo.svg" max-width="64" eager contain />
+      </v-card-actions>
+      <router-view />
+    </v-card>
+  </v-container>
 </template>
 
 <style lang="scss" scoped>
-router-link {
-  text-decoration: none;
-}
-
-.fill-height {
-  height: 100%;
-  background-image: url("../../assets/b.jpg");
+.v-card {
+  margin: 10rem auto auto auto;
 }
 
 .text {
