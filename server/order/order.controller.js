@@ -18,6 +18,23 @@ function fetch({ query: { userId } }, res) {
     .catch(err => res.status(status.BAD_REQUEST).send(err));
 }
 
+function fetchOne({ query: { userId } }, res) {
+  const where = userId ? { userId } : null;
+  const include = {
+    model: ProductOrder,
+    include: {
+      model: Product,
+      include: {
+        model: Brand,
+        attributes: { exclude: ['availableLiters'] }
+      }
+    }
+  };
+  return Order.findOne({ where, include })
+    .then(order => res.send(order))
+    .catch(err => res.status(status.BAD_REQUEST).send(err));
+}
+
 function create({ body: { userId, products } }, res) {
   return Order.create({ delivered: false, userId })
     .then(order => processOrder(order, products))
@@ -48,7 +65,7 @@ function remove({ params: { id } }, res) {
     .catch(err => res.status(status.BAD_REQUEST).send(err));
 }
 
-module.exports = { fetch, create, update, remove };
+module.exports = { fetch, fetchOne, create, update, remove };
 
 async function processOrder(order, products) {
   const entries = products.map(({ productId, quantity }) => ({

@@ -1,11 +1,11 @@
-import Auth from '@/main/components/auth';
-import CreateOrder from '@/main/components/dashboard/CreateOrder';
-import Dashboard from '@/main/components/dashboard';
+import Auth from '@/components/Auth';
+import Dashboard from '@/components/Main/Dashboard';
 import get from 'lodash/get';
-import Login from '@/main/components/auth/Login';
-import Orders from '@/main/components/dashboard/Orders';
-import Register from '@/main/components/auth/Register';
-import store from '@/main/store';
+import Login from '@/components/Auth/Login';
+import Main from '@/components/Main';
+import Orders from '@/components/Main/Orders';
+import Register from '@/components/Auth/Register';
+import store from '@/store';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
@@ -28,17 +28,17 @@ const router = new VueRouter({
     }]
   }, {
     path: '/',
-    name: 'dashboard',
-    component: Dashboard,
+    name: 'main',
+    component: Main,
     meta: { auth: true },
     children: [{
+      path: 'dashboard',
+      name: 'dashboard',
+      component: Dashboard
+    }, {
       path: 'orders',
       name: 'orders',
       component: Orders
-    }, {
-      path: 'create',
-      name: 'create-order',
-      component: CreateOrder
     }]
   }]
 });

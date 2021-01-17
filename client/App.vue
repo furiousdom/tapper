@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">
-    <Frame v-if="user" />
+    <frame v-if="user" />
     <v-main class="grey lighten-4">
       <router-view />
     </v-main>

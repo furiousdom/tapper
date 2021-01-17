@@ -1,9 +1,9 @@
 import api from './request';
-import { join } from 'path';
+import path from 'path';
 
 const urls = {
-  root: '/brand',
-  quantity: id => join(urls.root, `/${id}`, '/quantity')
+  root: 'brand',
+  quantity: id => path.join(urls.root, String(id), 'quantity')
 };
 
 function getQuantity({ id, divisor }) {

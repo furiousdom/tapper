@@ -1,7 +1,7 @@
 import api from './request';
 
 const urls = {
-  root: '/product'
+  root: 'product'
 };
 
 function fetch() {

@@ -32,21 +32,20 @@ import { mapActions } from 'vuex';
 
 export default {
   name: 'frame',
-  data: () => ({
-    drawer: null,
-    drawerItems: [
-      {
+  data: () => ({ drawer: null }),
+  computed: {
+    drawerItems: {
+      get: () => ([{
         icon: 'mdi-view-dashboard',
         title: 'Dashboard',
-        route: { name: 'create-order' }
-      },
-      {
+        route: { name: 'dashboard' }
+      }, {
         icon: 'mdi-view-list',
         title: 'Orders',
         route: { name: 'orders' }
-      }
-    ]
-  }),
+      }])
+    }
+  },
   methods: {
     ...mapActions('auth', ['logout']),
     signout() {

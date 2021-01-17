@@ -5,8 +5,12 @@
       <v-text-field v-model="email" label="Email" outlined />
       <v-text-field v-model="password" label="Password" type="password" outlined />
       <v-checkbox v-model="showPassword" label="Show Password" />
-      <div class="form-actions d-flex justify-space-between">
-        <v-btn :to="{ name: 'register' }" large text>Create Account</v-btn>
+      <div class="d-flex justify-space-between">
+        <v-btn
+          :to="{ name: 'register' }"
+          large text plain class="pl-0">
+          Create Account
+        </v-btn>
         <v-spacer />
         <v-btn @click="submit" dark large>Login</v-btn>
       </div>
@@ -30,14 +34,8 @@ export default {
     submit() {
       const { email, password } = this;
       return this.login({ email, password })
-        .then(data => this.$router.push({ name: 'create-order' }));
+        .then(data => this.$router.push({ name: 'dashboard' }));
     }
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.form-container {
-  padding: 0 2rem 5rem 2rem;
-}
-</style>

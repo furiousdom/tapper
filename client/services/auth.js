@@ -1,10 +1,10 @@
 import api from './request';
-import { join } from 'path';
+import path from 'path';
 
 const urls = {
-  root: '/user',
-  register: () => join(urls.root, '/register'),
-  login: () => join(urls.root, '/login')
+  root: 'user',
+  register: () => path.join(urls.root, 'register'),
+  login: () => path.join(urls.root, 'login')
 };
 
 function register(credentials) {

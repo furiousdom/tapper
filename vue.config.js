@@ -16,7 +16,7 @@ module.exports = {
     config
       .entry('app')
       .clear()
-      .add('./client/main/main.js')
+      .add('./client/main.js')
       .end();
     config.resolve.alias
       .set('@', path.join(__dirname, './client'));
