@@ -2,14 +2,15 @@ const bodyParser = require('body-parser');
 const config = require('./config/config');
 const cors = require('cors');
 const express = require('express');
-const { sequelize } = require('./database/index');
+const router = require('./router');
+const { sequelize } = require('./shared/database/index');
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use('/users', require('./routes/users'));
+app.use('/', router);
 
 sequelize.sync()
   .then(() => {
