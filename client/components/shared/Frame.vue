@@ -17,7 +17,7 @@
     </v-navigation-drawer>
     <v-app-bar app flat clipped-left class="white">
       <v-app-bar-nav-icon @click="drawer = !drawer" />
-      <v-app-bar-title>Ticketer</v-app-bar-title>
+      <v-app-bar-title>Tapper</v-app-bar-title>
       <v-spacer />
       <v-btn @click="signout" text>
         <span>SIGN OUT</span>

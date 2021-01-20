@@ -39,6 +39,7 @@ export default {
     }
   },
   async created() {
+    if (this.latestOrder) return;
     const { id: userId } = this.user;
     this.latestOrder = await orderApi.fetchOne({ userId });
   }

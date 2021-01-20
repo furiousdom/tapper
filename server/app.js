@@ -1,3 +1,4 @@
+const auth = require('./shared/auth');
 const bodyParser = require('body-parser');
 const config = require('./config/config');
 const cors = require('cors');
@@ -12,8 +13,9 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
+app.use(auth.initialize());
 
-app.use('/', router);
+app.use('/api', router);
 
 app.use(errorHandler);
 

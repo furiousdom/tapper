@@ -71,6 +71,7 @@ export default {
 <style lang="scss" scoped>
 .v-form {
   padding: 1rem 2rem 1rem 2rem;
+  border-radius: 0.25rem;
   background: #fff;
 }
 </style>

@@ -2,8 +2,8 @@ import * as actions from './actions';
 import * as mutations from './mutations';
 
 const state = {
-  user: null,
-  token: null
+  user: JSON.parse(localStorage.getItem('user')) || null,
+  token: localStorage.getItem('token') || null
 };
 
 export default {
