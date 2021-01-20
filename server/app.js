@@ -3,7 +3,10 @@ const config = require('./config/config');
 const cors = require('cors');
 const express = require('express');
 const router = require('./router');
-const { sequelize } = require('./shared/database/index');
+const { sequelize } = require('./shared/database');
+const status = require('http-status-codes');
+// eslint-disable-next-line require-sort/require-sort
+require('express-async-errors');
 
 const app = express();
 
@@ -14,7 +17,7 @@ app.use('/', router);
 
 app.use(errorHandler);
 
-app.use((req, res, next) => res.status(404).end());
+app.use((req, res, next) => res.status(status.NOT_FOUND).end());
 
 sequelize.sync()
   .then(() => {

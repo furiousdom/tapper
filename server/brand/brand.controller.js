@@ -6,10 +6,8 @@ async function fetch(_, res) {
 }
 
 async function create({ body: { name, availableLiters } }, res) {
-  res.status(status.CREATED).send(await Brand.create({
-    name,
-    availableLiters
-  }));
+  const brand = await Brand.create({ name, availableLiters });
+  res.status(status.CREATED).send(brand);
 }
 
 async function update({ params: { id }, body: { availableLiters } }, res) {
