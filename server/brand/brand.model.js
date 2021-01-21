@@ -3,11 +3,6 @@ const { Model } = require('sequelize');
 class Brand extends Model {
   static fields({ DATE, INTEGER, STRING }) {
     return {
-      name: STRING,
-      availableLiters: {
-        type: INTEGER,
-        field: 'available_liters'
-      },
       createdAt: {
         type: DATE,
         field: 'created_at'
@@ -19,6 +14,11 @@ class Brand extends Model {
       deletedAt: {
         type: DATE,
         field: 'deleted_at'
+      },
+      name: STRING,
+      availableLiters: {
+        type: INTEGER,
+        field: 'available_liters'
       }
     };
   }

@@ -39,7 +39,10 @@ export default {
     }
   }),
   methods: {
-    register: () => api.register(this.user)
+    register() {
+      api.register(this.user);
+      this.$router.push({ name: 'login' });
+    }
   }
 };
 </script>

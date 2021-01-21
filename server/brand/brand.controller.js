@@ -1,5 +1,5 @@
 const { Brand } = require('../shared/database');
-const status = require('http-status-codes');
+const { CREATED } = require('http-status-codes');
 
 async function fetch(_, res) {
   res.send(await Brand.findAll());
@@ -7,7 +7,7 @@ async function fetch(_, res) {
 
 async function create({ body: { name, availableLiters } }, res) {
   const brand = await Brand.create({ name, availableLiters });
-  res.status(status.CREATED).send(brand);
+  res.status(CREATED).send(brand);
 }
 
 async function update({ params: { id }, body: { availableLiters } }, res) {
@@ -16,6 +16,7 @@ async function update({ params: { id }, body: { availableLiters } }, res) {
   res.send(await brand.save());
 }
 
+// TODO: I think we have a problem here. It executes in the db but throws unhandled promise rejection
 async function remove({ params: { id } }, res) {
   const brand = await Brand.findByPk(id);
   const arr = await brand.destroy();

@@ -1,4 +1,4 @@
-const config = require('../../config/config');
+const config = require('../../config');
 const forEach = require('lodash/forEach');
 const Hooks = require('./hooks');
 const invoke = require('lodash/invoke');

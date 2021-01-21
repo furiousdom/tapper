@@ -4,8 +4,6 @@ const PRODUCT_TYPES = ['KEG', 'BOTTLES'];
 class Product extends Model {
   static fields({ DATE, ENUM, INTEGER }) {
     return {
-      type: ENUM(PRODUCT_TYPES),
-      liters: INTEGER,
       createdAt: {
         type: DATE,
         field: 'created_at'
@@ -17,7 +15,9 @@ class Product extends Model {
       deletedAt: {
         type: DATE,
         field: 'deleted_at'
-      }
+      },
+      type: ENUM(PRODUCT_TYPES),
+      liters: INTEGER
     };
   }
 

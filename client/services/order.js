@@ -14,7 +14,7 @@ async function fetch(params = {}) {
 
 async function fetchOne(params = {}) {
   const { data } = await api.get(urls.fetchOne(), { params });
-  return { ...data, createdAt: new Date(data.createdAt) };
+  return data ? { ...data, createdAt: new Date(data.createdAt) } : null;
 }
 
 function create(params) {

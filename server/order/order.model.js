@@ -1,9 +1,8 @@
 const { Model } = require('sequelize');
 
 class Order extends Model {
-  static fields({ BOOLEAN, DATE }) {
+  static fields({ BOOLEAN, DATE, TEXT }) {
     return {
-      delivered: BOOLEAN,
       createdAt: {
         type: DATE,
         field: 'created_at'
@@ -15,7 +14,9 @@ class Order extends Model {
       deletedAt: {
         type: DATE,
         field: 'deleted_at'
-      }
+      },
+      delivered: BOOLEAN,
+      note: TEXT
     };
   }
 

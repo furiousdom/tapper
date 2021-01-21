@@ -1,7 +1,7 @@
-const config = require('../config/config');
+const { BAD_REQUEST, CREATED, FORBIDDEN, INTERNAL_SERVER_ERROR } = require('http-status-codes');
+const config = require('../config');
 const jwt = require('jsonwebtoken');
 const msg = require('../config/messages');
-const status = require('http-status-codes');
 const { User } = require('../shared/database');
 
 async function register(req, res) {
@@ -9,9 +9,9 @@ async function register(req, res) {
   if (errors.length) return res.send({ errors, body });
   try {
     const user = await User.create(body);
-    if (user) res.sendStatus(status.CREATED);
+    if (user) res.sendStatus(CREATED);
   } catch (err) {
-    res.status(status.BAD_REQUEST).send(err);
+    res.status(BAD_REQUEST).send(err);
   }
 }
 
@@ -19,16 +19,16 @@ async function login(req, res) {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ where: { email } });
-    if (!user) return res.status(status.FORBIDDEN).send({ error: msg.loginFailed });
+    if (!user) return res.status(FORBIDDEN).send({ error: msg.loginFailed });
     const isPasswordValid = await user.authenticate(password);
-    if (!isPasswordValid) return res.status(status.FORBIDDEN).send({ error: msg.wrongPassword });
+    if (!isPasswordValid) return res.status(FORBIDDEN).send({ error: msg.wrongPassword });
     const userJson = user.toJSON();
     res.send({
       user: userJson,
       token: jwtSignUser(userJson)
     });
   } catch (err) {
-    res.status(status.INTERNAL_SERVER_ERROR).send({ error: msg.serverError });
+    res.status(INTERNAL_SERVER_ERROR).send({ error: msg.serverError });
   }
 }
 

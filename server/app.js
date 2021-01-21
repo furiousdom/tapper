@@ -1,17 +1,17 @@
+const { INTERNAL_SERVER_ERROR, NOT_FOUND } = require('http-status-codes');
 const auth = require('./shared/auth');
-const bodyParser = require('body-parser');
-const config = require('./config/config');
+const AuthError = require('passport/lib/errors/authenticationerror');
+const config = require('./config');
 const cors = require('cors');
 const express = require('express');
 const router = require('./router');
 const { sequelize } = require('./shared/database');
-const status = require('http-status-codes');
 // eslint-disable-next-line require-sort/require-sort
 require('express-async-errors');
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(cors());
 app.use(auth.initialize());
 
@@ -19,7 +19,7 @@ app.use('/api', router);
 
 app.use(errorHandler);
 
-app.use((req, res, next) => res.status(status.NOT_FOUND).end());
+app.use((req, res, next) => res.status(NOT_FOUND).end());
 
 sequelize.sync()
   .then(() => {
@@ -27,9 +27,12 @@ sequelize.sync()
   });
 
 function errorHandler(err, req, res, next) {
-  if (!err.status || err.status === 500) {
+  if (!err.status || err.status === INTERNAL_SERVER_ERROR) {
     console.error(err);
-    res.status(500).end();
+    res.status(INTERNAL_SERVER_ERROR).end();
+    return;
+  } else if (err instanceof AuthError) {
+    res.status(err.status).send(err.message);
     return;
   }
   const { status, message } = err;

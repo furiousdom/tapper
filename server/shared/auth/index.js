@@ -1,5 +1,5 @@
 const { ExtractJwt, Strategy: JwtStrategy } = require('passport-jwt');
-const { authentication: { jwtSecret } } = require('../../config/config');
+const { authentication: { jwtSecret } } = require('../../config');
 const passport = require('passport');
 const { User } = require('../database');
 
@@ -8,12 +8,17 @@ const options = {
   secretOrKey: jwtSecret
 };
 
-const jwtStrategy = new JwtStrategy(options, (payload, done) => {
-  return User.findOne({ id: payload.id })
+passport.use(new JwtStrategy(options, ({ id }, done) => {
+  return User.findOne({ id })
     .then(user => done(null, user || false))
     .catch(err => done(err));
-});
+}));
 
-passport.use(jwtStrategy);
-
-module.exports = passport;
+module.exports = {
+  initialize(options = {}) {
+    return passport.initialize(options);
+  },
+  authenticate(strategy, options = {}) {
+    return passport.authenticate(strategy, { ...options, failWithError: true });
+  }
+};

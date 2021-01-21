@@ -1,5 +1,5 @@
 const { Brand, Product } = require('../shared/database');
-const status = require('http-status-codes');
+const { OK } = require('http-status-codes');
 
 async function fetch(_, res) {
   const include = { model: Brand };
@@ -21,7 +21,7 @@ async function update({ params: { id }, body: { type, liters, brandId } }, res) 
 async function remove({ params: { id } }, res) {
   const product = await Product.findByPk(id);
   const arr = await product.destroy();
-  if (arr) res.status(status.OK).send();
+  if (arr) res.status(OK).send();
 }
 
 module.exports = { fetch, create, update, remove };
