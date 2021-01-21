@@ -1,5 +1,5 @@
 const { BAD_REQUEST, CREATED, NO_CONTENT, OK } = require('http-status-codes');
-const { Brand, Order, Product, ProductOrder } = require('../shared/database');
+const { Brand, Order, Product, ProductOrder } = require('../common/database');
 
 function fetch({ query: { userId } }, res) {
   const where = userId ? { userId } : null;

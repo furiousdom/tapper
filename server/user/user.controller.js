@@ -2,7 +2,7 @@ const { BAD_REQUEST, CREATED, FORBIDDEN, INTERNAL_SERVER_ERROR } = require('http
 const config = require('../config');
 const jwt = require('jsonwebtoken');
 const msg = require('../config/messages');
-const { User } = require('../shared/database');
+const { User } = require('../common/database');
 
 async function register(req, res) {
   const { errors, body } = req;

@@ -1,4 +1,4 @@
-const auth = require('./shared/auth');
+const auth = require('./common/auth');
 const brand = require('./brand');
 const express = require('express');
 const order = require('./order');

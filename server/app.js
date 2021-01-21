@@ -1,11 +1,11 @@
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = require('http-status-codes');
-const auth = require('./shared/auth');
+const auth = require('./common/auth');
 const AuthError = require('passport/lib/errors/authenticationerror');
 const config = require('./config');
 const cors = require('cors');
 const express = require('express');
 const router = require('./router');
-const { sequelize } = require('./shared/database');
+const { sequelize } = require('./common/database');
 // eslint-disable-next-line require-sort/require-sort
 require('express-async-errors');
 

@@ -1,4 +1,4 @@
-const { Brand, Product } = require('../shared/database');
+const { Brand, Product } = require('../common/database');
 const { OK } = require('http-status-codes');
 
 async function fetch(_, res) {
