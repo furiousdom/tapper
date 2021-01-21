@@ -34,7 +34,7 @@ export default {
     submit() {
       const { email, password } = this;
       return this.login({ email, password })
-        .then(data => this.$router.push({ name: 'dashboard' }));
+        .then(_ => this.$router.push({ name: 'dashboard' }));
     }
   }
 };

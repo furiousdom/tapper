@@ -1,5 +1,8 @@
+const { auth } = require('../config');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const { Model } = require('sequelize');
+const pick = require('lodash/pick');
 const PRODUCT_TYPES = ['USER', 'ADMIN'];
 
 const SALT = bcrypt.genSaltSync(10);
@@ -67,6 +70,11 @@ class User extends Model {
   authenticate(password) {
     return bcrypt.compare(password, this.password)
       .then(isMatch => isMatch ? this : false);
+  }
+
+  createToken(options = {}) {
+    const payload = pick(this, ['id', 'email']);
+    return jwt.sign(payload, auth.jwtSecret, options);
   }
 }
 

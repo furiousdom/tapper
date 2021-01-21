@@ -1,6 +1,4 @@
-const { BAD_REQUEST, CREATED, FORBIDDEN, INTERNAL_SERVER_ERROR } = require('http-status-codes');
-const config = require('../config');
-const jwt = require('jsonwebtoken');
+const { BAD_REQUEST, CREATED/*, FORBIDDEN, INTERNAL_SERVER_ERROR */ } = require('http-status-codes');
 const msg = require('../config/messages');
 const { User } = require('../common/database');
 
@@ -15,21 +13,11 @@ async function register(req, res) {
   }
 }
 
-async function login(req, res) {
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ where: { email } });
-    if (!user) return res.status(FORBIDDEN).send({ error: msg.loginFailed });
-    const isPasswordValid = await user.authenticate(password);
-    if (!isPasswordValid) return res.status(FORBIDDEN).send({ error: msg.wrongPassword });
-    const userJson = user.toJSON();
-    res.send({
-      user: userJson,
-      token: jwtSignUser(userJson)
-    });
-  } catch (err) {
-    res.status(INTERNAL_SERVER_ERROR).send({ error: msg.serverError });
-  }
+function login({ user }, res) {
+  const ONE_WEEK = 60 * 60 * 24 * 7;
+  const token = user.createToken({ expiresIn: ONE_WEEK });
+  const profile = { id: user.id, email: user.email };
+  res.send({ token, user: profile });
 }
 
 module.exports = { errorHandler, login, register };
@@ -42,11 +30,4 @@ function errorHandler(req, _, next) {
   if (password !== rePassword) errors.push(msg.failedMatch);
   req.errors = errors;
   next();
-}
-
-function jwtSignUser(user) {
-  const ONE_WEEK = 60 * 60 * 24 * 7;
-  return jwt.sign(user, config.authentication.jwtSecret, {
-    expiresIn: ONE_WEEK
-  });
 }
