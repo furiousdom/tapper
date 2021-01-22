@@ -40,8 +40,8 @@ export default {
   }),
   methods: {
     register() {
-      api.register(this.user);
-      this.$router.push({ name: 'login' });
+      return api.register(this.user)
+        .then(this.$router.push({ name: 'login' }));
     }
   }
 };

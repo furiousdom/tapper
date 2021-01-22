@@ -17,16 +17,7 @@ app.use(auth.initialize());
 
 app.use('/api', router);
 
-app.use(errorHandler);
-
-app.use((req, res, next) => res.status(NOT_FOUND).end());
-
-sequelize.sync()
-  .then(() => {
-    app.listen(config.PORT, console.log(`Server started on port ${config.PORT}`));
-  });
-
-function errorHandler(err, req, res, next) {
+app.use((err, req, res, next) => {
   if (!err.status || err.status === INTERNAL_SERVER_ERROR) {
     console.error(err);
     res.status(INTERNAL_SERVER_ERROR).end();
@@ -37,4 +28,11 @@ function errorHandler(err, req, res, next) {
   }
   const { status, message } = err;
   res.status(status).json({ error: { status, message } });
-}
+});
+
+app.use((req, res, next) => res.status(NOT_FOUND).end());
+
+sequelize.sync()
+  .then(() => {
+    app.listen(config.PORT, console.log(`Server started on port ${config.PORT}`));
+  });

@@ -74,7 +74,7 @@ class User extends Model {
 
   createToken(options = {}) {
     const payload = pick(this, ['id', 'email']);
-    return jwt.sign(payload, auth.jwtSecret, options);
+    return jwt.sign(payload, auth.secret, options);
   }
 }
 

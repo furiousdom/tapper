@@ -8,7 +8,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5000/api'
+        target: process.env.API_PATH || 'http://localhost:5000'
       }
     }
   },

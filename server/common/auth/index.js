@@ -1,5 +1,5 @@
 const { ExtractJwt, Strategy: JwtStrategy } = require('passport-jwt');
-const { auth: { jwtSecret } } = require('../../config');
+const { auth: config } = require('../../config');
 const LocalStrategy = require('passport-local');
 const passport = require('passport');
 const { User } = require('../database');
@@ -17,8 +17,8 @@ passport.use(new LocalStrategy(options, (email, password, done) => {
 }));
 
 const jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: jwtSecret
+  jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme(config.scheme),
+  secretOrKey: config.secret
 };
 
 passport.use(new JwtStrategy(jwtOptions, ({ id }, done) => {

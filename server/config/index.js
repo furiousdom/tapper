@@ -10,6 +10,7 @@ module.exports = {
     }
   },
   auth: {
-    jwtSecret: process.env.JWT_SECRET || 'secret'
+    scheme: process.env.AUTH_JWT_SCHEME || 'Bearer',
+    secret: process.env.AUTH_JWT_SECRET || 'secret'
   }
 };
