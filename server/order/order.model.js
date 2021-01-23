@@ -1,7 +1,8 @@
 const { Model } = require('sequelize');
+const STATUS = ['OPEN', 'REVIEWED', 'CLOSED'];
 
 class Order extends Model {
-  static fields({ BOOLEAN, DATE, TEXT }) {
+  static fields({ DATE, ENUM, TEXT }) {
     return {
       createdAt: {
         type: DATE,
@@ -15,7 +16,7 @@ class Order extends Model {
         type: DATE,
         field: 'deleted_at'
       },
-      delivered: BOOLEAN,
+      status: ENUM(STATUS),
       note: TEXT
     };
   }

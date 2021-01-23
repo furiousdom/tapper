@@ -59,7 +59,7 @@ export default {
   },
   async mounted() {
     const { id: userId } = this.user;
-    this.orders = await orderApi.fetch({ userId });
+    this.orders = await orderApi.getClosed({ userId });
   }
 };
 </script>

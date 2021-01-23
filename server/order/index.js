@@ -1,13 +1,14 @@
-const { create, fetch, fetchOne, remove, update } = require('./order.controller');
+const ctrl = require('./order.controller');
 const express = require('express');
 const router = express.Router();
 
 router
-  .get('/', fetch)
-  .get('/fetch-one', fetchOne)
-  .post('/create', create)
-  .patch('/:id', update)
-  .delete('/:id', remove);
+  .get('/closed', ctrl.getClosed)
+  .get('/opened', ctrl.getOpen)
+  .post('/create', ctrl.create)
+  .patch('/:id', ctrl.update)
+  .patch('/:id/close', ctrl.setClosed)
+  .delete('/:id', ctrl.remove);
 
 module.exports = {
   path: '/order',

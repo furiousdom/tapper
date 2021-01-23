@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { Model } = require('sequelize');
 const pick = require('lodash/pick');
-const PRODUCT_TYPES = ['USER', 'ADMIN'];
+const ROLES = ['USER', 'ADMIN'];
 
 const SALT = bcrypt.genSaltSync(10);
 const encrypt = password => bcrypt.hash(password, SALT);
@@ -27,7 +27,7 @@ class User extends Model {
         }
       },
       password: STRING,
-      role: ENUM(PRODUCT_TYPES),
+      role: ENUM(ROLES),
       name: STRING,
       address: STRING,
       contactName: {

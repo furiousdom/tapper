@@ -3,12 +3,18 @@
     <v-card-title class="justify-center">Register</v-card-title>
     <v-form>
       <v-text-field v-model="user.email" label="Email" dense outlined />
-      <v-text-field v-model="user.password" label="Password" type="password" dense outlined />
-      <v-text-field v-model="user.rePassword" label="Confirm Password" type="password" dense outlined />
-      <v-text-field v-model="user.name" label="Name" dense outlined />
-      <v-text-field v-model="user.address" label="Address" dense outlined />
-      <v-text-field v-model="user.contactName" label="Contact Name" dense outlined />
-      <v-text-field v-model="user.contactNumber" label="Contact Number" dense outlined />
+      <div class="split">
+        <v-text-field v-model="user.password" label="Password" type="password" dense outlined />
+        <v-text-field v-model="user.rePassword" label="Confirm Password" type="password" dense outlined />
+      </div>
+      <div class="split">
+        <v-text-field v-model="user.name" label="Name" dense outlined />
+        <v-text-field v-model="user.address" label="Address" dense outlined />
+      </div>
+      <div class="split">
+        <v-text-field v-model="user.contactName" label="Contact Name" dense outlined />
+        <v-text-field v-model="user.contactNumber" label="Contact Number" dense outlined />
+      </div>
       <v-checkbox v-model="showPassword" label="Show Password" dense />
       <div class="d-flex justify-space-between">
         <v-btn :to="{ name: 'login' }" large text plain class="pl-0">Sign In</v-btn>
@@ -46,3 +52,15 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+@media only screen and (min-width: 600px) {
+  .split {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .v-text-field {
+    margin: 0 0.5rem;
+  }
+}
+</style>

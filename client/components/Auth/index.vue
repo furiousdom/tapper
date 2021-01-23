@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card max-width="470" rounded="lg" outlined class="ma-auto mt-sm-16">
+    <v-card :max-width="showingRegister" rounded="lg" outlined class="ma-auto mt-sm-16">
       <v-card-actions class="justify-center mt-4">
         <v-img src="@/assets/tapb-logo.svg" max-width="64" eager contain />
       </v-card-actions>
@@ -8,6 +8,16 @@
     </v-card>
   </v-container>
 </template>
+
+<script>
+export default {
+  computed: {
+    showingRegister() {
+      return this.$route.name === 'register' ? '800' : '470';
+    }
+  }
+};
+</script>
 
 <style lang="scss" scoped>
 .text {

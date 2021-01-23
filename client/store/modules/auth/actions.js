@@ -9,10 +9,6 @@ export const login = ({ commit }, credentials) => {
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       return response;
-    })
-    .catch(err => {
-      console.error(err);
-      return err;
     });
 };
 

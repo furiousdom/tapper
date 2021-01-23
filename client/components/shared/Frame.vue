@@ -41,7 +41,7 @@ export default {
         route: { name: 'dashboard' }
       }, {
         icon: 'mdi-view-list',
-        title: 'Orders',
+        title: 'Closed Orders',
         route: { name: 'orders' }
       }])
     }

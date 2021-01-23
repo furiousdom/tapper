@@ -50,10 +50,9 @@ export default {
     itemQuantities: () => [1, 2, 3, 4, 5, 6]
   },
   methods: {
-    async submit() {
+    submit() {
       const { orderItems, user: { id: userId } } = this;
-      const { data } = await orderApi.create({ userId, products: orderItems });
-      if (data === 'Created') this.$router.push({ name: 'orders' });
+      return orderApi.create({ userId, products: orderItems });
     },
     addProduct() {
       this.orderItems.push(setOrderItem);
