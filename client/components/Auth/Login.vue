@@ -3,8 +3,12 @@
     <v-card-title class="justify-center">Log In</v-card-title>
     <v-form>
       <v-text-field v-model="email" label="Email" outlined />
-      <v-text-field v-model="password" label="Password" type="password" outlined />
-      <v-checkbox v-model="showPassword" label="Show Password" />
+      <v-text-field
+        v-model="password"
+        @click:append="show = !show"
+        :type="show ? 'text' : 'password'"
+        :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+        label="Password" outlined />
       <div class="d-flex justify-space-between">
         <v-btn
           :to="{ name: 'register' }"
@@ -26,7 +30,7 @@ export default {
   data: () => ({
     email: '',
     password: '',
-    showPassword: false,
+    show: false,
     error: null
   }),
   methods: {

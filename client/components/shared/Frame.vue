@@ -17,7 +17,8 @@
     </v-navigation-drawer>
     <v-app-bar app flat clipped-left class="white">
       <v-app-bar-nav-icon @click="drawer = !drawer" />
-      <v-app-bar-title>Tapper</v-app-bar-title>
+      <img src="@/assets/tapb-logo.svg" width="36px" height="36px" alt="Logo" class="py-1 ml-3">
+      <v-toolbar-title>Tapper</v-toolbar-title>
       <v-spacer />
       <v-btn @click="signout" text>
         <span>SIGN OUT</span>
@@ -41,7 +42,7 @@ export default {
         route: { name: 'dashboard' }
       }, {
         icon: 'mdi-view-list',
-        title: 'Closed Orders',
+        title: 'Delivered Orders',
         route: { name: 'orders' }
       }])
     }

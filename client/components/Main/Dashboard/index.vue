@@ -1,9 +1,9 @@
 <template>
-  <v-row>
-    <v-col cols="12" md="6">
+  <v-row justify-sm="space-around">
+    <v-col cols="12" sm="8" md="6">
       <active-order />
     </v-col>
-    <v-col cols="12" md="6">
+    <v-col cols="12" sm="8" md="6">
       <create-order />
     </v-col>
   </v-row>

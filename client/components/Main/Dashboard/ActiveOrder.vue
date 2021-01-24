@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="latestOrder" v-model="latestOrder" flat>
+  <v-card v-if="latestOrder" v-model="latestOrder" flat class="pb-2">
     <div class="d-flex justify-space-between">
       <v-card-subtitle class="pb-2">
         Order Date: {{ formatDate(latestOrder.createdAt) }}

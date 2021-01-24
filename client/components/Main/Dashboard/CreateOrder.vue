@@ -55,7 +55,7 @@ export default {
       return orderApi.create({ userId, products: orderItems });
     },
     addProduct() {
-      this.orderItems.push(setOrderItem);
+      this.orderItems.push(setOrderItem());
     }
   },
   async created() {
