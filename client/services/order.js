@@ -5,7 +5,8 @@ const urls = {
   root: 'order',
   pastOrders: () => path.join(urls.root, 'closed'),
   getOpen: () => path.join(urls.root, 'opened'),
-  create: () => path.join(urls.root, 'create')
+  create: () => path.join(urls.root, 'create'),
+  setClosed: id => path.join(urls.root, String(id), 'close')
 };
 
 async function getClosed(params = {}) {
@@ -18,8 +19,12 @@ async function getOpen(params = {}) {
   return data ? { ...data, createdAt: new Date(data.createdAt) } : null;
 }
 
-function create(params) {
+function create(params = {}) {
   return api.post(urls.create(), params);
 }
 
-export default { create, getClosed, getOpen };
+function setClosed({ orderId, ...params }) {
+  return api.patch(urls.setClosed(orderId), params);
+}
+
+export default { create, getClosed, getOpen, setClosed };

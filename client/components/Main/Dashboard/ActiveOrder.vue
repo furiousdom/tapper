@@ -4,7 +4,7 @@
       <v-card-subtitle class="pb-2">
         Order Date: {{ formatDate(latestOrder.createdAt) }}
       </v-card-subtitle>
-      <v-checkbox dense class="mt-2" />
+      <v-checkbox @click="markDone" :disabled="status" dense class="mt-2" />
     </div>
     <v-divider class="mx-2" />
     <v-card-subtitle class="pb-2">Beers</v-card-subtitle>
@@ -20,13 +20,17 @@
 <script>
 import { format } from 'date-fns';
 import { mapState } from 'vuex';
+import { OK } from 'http-status-codes';
 import orderApi from '@/services/order';
 
 export default {
   name: 'active-order',
   data: () => ({ latestOrder: null }),
   computed: {
-    ...mapState('auth', ['user'])
+    ...mapState('auth', ['user']),
+    status() {
+      return this.latestOrder.status !== 'REVIEWED';
+    }
   },
   methods: {
     formatDate(date) {
@@ -36,12 +40,17 @@ export default {
       return orderItems.map(({ quantity, Product }) => (
         `${quantity} ${Product.Brand.name} ${Product.liters}L ${Product.type}`
       ));
+    },
+    async markDone() {
+      if (!this.latestOrder) return;
+      const params = { orderId: this.latestOrder.id, status: 'CLOSED' };
+      const { status } = await orderApi.setClosed(params);
+      if (status === OK) this.latestOrder = null;
     }
   },
   async created() {
-    if (this.latestOrder) return;
-    const { id: userId } = this.user;
-    this.latestOrder = await orderApi.getOpen({ userId });
+    this.latestOrder = this.latestOrder ? this.latestOrder
+      : await orderApi.getOpen({ userId: this.user.id });
   }
 };
 </script>

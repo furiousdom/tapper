@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cors());
 app.use(auth.initialize());
 
-app.use('/api', router);
+app.use(config.apiPath, router);
 
 app.use((err, req, res, next) => {
   if (!err.status || err.status === INTERNAL_SERVER_ERROR) {
@@ -34,5 +34,5 @@ app.use((req, res, next) => res.status(NOT_FOUND).end());
 
 sequelize.sync()
   .then(() => {
-    app.listen(config.PORT, console.log(`Server started on port ${config.PORT}`));
+    app.listen(config.port, console.log(`Server started on port ${config.port}`));
   });

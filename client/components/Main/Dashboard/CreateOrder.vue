@@ -20,13 +20,11 @@
           dense outlined />
       </v-col>
     </v-row>
-    <div class="d-flex flex-column">
-      <v-btn @click="addProduct" depressed plain class="mb-2">
-        <v-icon>mdi-plus</v-icon>
-      </v-btn>
-      <v-spacer />
-      <v-btn @click="submit" depressed class="my-2">Submit Order</v-btn>
-    </div>
+    <v-btn @click="addProduct" block depressed plain class="mb-2">
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
+    <v-textarea v-model="note" label="Note" dense outlined />
+    <v-btn @click="submit" block depressed class="my-2">Submit Order</v-btn>
   </v-form>
 </template>
 
@@ -40,10 +38,10 @@ const setOrderItem = () => ({ productId: null, quantity: null });
 export default {
   name: 'create-order',
   data: () => ({
-    latestOrder: null,
     availableProducts: [],
     quantities: [],
-    orderItems: [setOrderItem()]
+    orderItems: [setOrderItem()],
+    note: ''
   }),
   computed: {
     ...mapState('auth', ['user']),
@@ -51,11 +49,16 @@ export default {
   },
   methods: {
     submit() {
-      const { orderItems, user: { id: userId } } = this;
-      return orderApi.create({ userId, products: orderItems });
+      const { orderItems, user: { id: userId }, note } = this;
+      return orderApi.create({ userId, note, products: orderItems })
+        .then(this.clearForm());
     },
     addProduct() {
       this.orderItems.push(setOrderItem());
+    },
+    clearForm() {
+      this.orderItems = [setOrderItem()];
+      this.note = '';
     }
   },
   async created() {

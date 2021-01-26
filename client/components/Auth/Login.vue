@@ -1,13 +1,16 @@
 <template>
-  <div class="form-container">
+  <v-card max-width="29.5rem" rounded="lg" outlined class="ma-auto mt-sm-16">
+    <div class="d-flex justify-center mt-4">
+      <v-img src="@/assets/tapb-logo.svg" max-width="64" eager contain />
+    </div>
     <v-card-title class="justify-center">Log In</v-card-title>
     <v-form>
       <v-text-field v-model="email" label="Email" outlined />
       <v-text-field
         v-model="password"
         @click:append="show = !show"
-        :type="show ? 'text' : 'password'"
-        :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+        :type="textType"
+        :append-icon="eyeIcon"
         label="Password" outlined />
       <div class="d-flex justify-space-between">
         <v-btn
@@ -19,7 +22,7 @@
         <v-btn @click="submit" dark large>Login</v-btn>
       </div>
     </v-form>
-  </div>
+  </v-card>
 </template>
 
 <script>
@@ -33,6 +36,14 @@ export default {
     show: false,
     error: null
   }),
+  computed: {
+    textType() {
+      return this.show ? 'text' : 'password';
+    },
+    eyeIcon() {
+      return this.show ? 'mdi-eye' : 'mdi-eye-off';
+    }
+  },
   methods: {
     ...mapActions('auth', ['login']),
     submit() {

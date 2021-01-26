@@ -1,16 +1,12 @@
-const { BAD_REQUEST, CREATED/*, FORBIDDEN, INTERNAL_SERVER_ERROR */ } = require('http-status-codes');
+const { CREATED } = require('http-status-codes');
 const msg = require('../config/messages');
 const { User } = require('../common/database');
 
 async function register(req, res) {
   const { errors, body } = req;
   if (errors.length) return res.send({ errors, body });
-  try {
-    const user = await User.create(body);
-    if (user) res.sendStatus(CREATED);
-  } catch (err) {
-    res.status(BAD_REQUEST).send(err);
-  }
+  const user = await User.create(body);
+  if (user) res.sendStatus(CREATED);
 }
 
 function login({ user }, res) {

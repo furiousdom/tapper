@@ -8,7 +8,7 @@
       <v-row class="mx-2 ml-md-4">
         <v-col cols="2" md="2">
           <div class="caption grey-text">Order no.</div>
-          <div class="black--text pl-2">{{ index + 1 }}</div>
+          <div class="black--text pl-2">{{ orders.length - index }}</div>
         </v-col>
         <v-col cols="5" md="3">
           <div class="caption grey-text">Ordered on:</div>

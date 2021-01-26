@@ -1,10 +1,11 @@
 import axios from 'axios';
 
+const apiPath = process.env.API_PATH || '/api';
 const authScheme = process.env.AUTH_JWT_SCHEME || 'Bearer';
 
 const config = {
   headers: { 'Content-Type': 'application/json' },
-  baseURL: '/api'
+  baseURL: apiPath
 };
 const axiosInstance = axios.create(config);
 

@@ -1,5 +1,8 @@
 <template>
-  <div class="form-container">
+  <v-card max-width="50rem" rounded="lg" outlined class="ma-auto mt-sm-16">
+    <div class="d-flex justify-center mt-4">
+      <v-img src="@/assets/tapb-logo.svg" max-width="64" contain />
+    </div>
     <v-card-title class="justify-center">Register</v-card-title>
     <v-form>
       <v-text-field v-model="user.email" label="Email" dense outlined />
@@ -7,14 +10,14 @@
         <v-text-field
           v-model="user.password"
           @click:append="show = !show"
-          :type="show ? 'text' : 'password'"
-          :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="textType(show)"
+          :append-icon="eyeIcon(show)"
           label="Password" dense outlined />
         <v-text-field
           v-model="user.rePassword"
           @click:append="reShow = !reShow"
-          :type="reShow ? 'text' : 'password'"
-          :append-icon="reShow ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="textType(reShow)"
+          :append-icon="eyeIcon(reShow)"
           label="Confirm Password" dense outlined />
       </div>
       <div class="split">
@@ -31,7 +34,7 @@
         <v-btn @click="register" dark large>Register</v-btn>
       </div>
     </v-form>
-  </div>
+  </v-card>
 </template>
 
 <script>
@@ -55,9 +58,11 @@ export default {
     }
   }),
   methods: {
+    textType: show => show ? 'text' : 'password',
+    eyeIcon: show => show ? 'mdi-eye' : 'mdi-eye-off',
     register() {
       return api.register(this.user)
-        .then(this.$router.push({ name: 'login' }));
+        .then(() => this.$router.push({ name: 'login' }));
     }
   }
 };

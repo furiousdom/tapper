@@ -5,7 +5,7 @@ const { Model } = require('sequelize');
 const pick = require('lodash/pick');
 const ROLES = ['USER', 'ADMIN'];
 
-const SALT = bcrypt.genSaltSync(10);
+const SALT = bcrypt.genSaltSync(auth.saltRounds);
 const encrypt = password => bcrypt.hash(password, SALT);
 
 function encryptPassword(user) {
