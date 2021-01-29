@@ -33,6 +33,31 @@ class Order extends Model {
       foreignKey: { name: 'userId', field: 'user_id' }
     });
   }
+
+  static scopes({ ProductOrder, Product }) {
+    // TODO: If you rename quantity to availableQuantity on product model
+    // you can unify all the excludes into a single array up here!
+    const timestamps = ['createdAt', 'updatedAt', 'deletedAt'];
+    return {
+      includeEverything: {
+        include: {
+          model: ProductOrder,
+          attributes: {
+            exclude: ['orderId', 'productId', ...timestamps]
+          },
+          include: {
+            model: Product,
+            attributes: {
+              exclude: ['quantity', ...timestamps]
+            }
+          }
+        },
+        attributes: {
+          exclude: ['userId']
+        }
+      }
+    };
+  }
 }
 
 module.exports = Order;

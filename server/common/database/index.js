@@ -33,11 +33,17 @@ function defineModel(Model, connection = sequelize) {
 forEach(models, model => {
   invoke(model, 'associate', models);
   addHooks(model, Hooks);
+  addScopes(model, models);
 });
 
 function addHooks(model, Hooks) {
   const hooks = invoke(model, 'hooks', Hooks);
   forEach(hooks, (it, type) => model.addHook(type, it));
+}
+
+function addScopes(model, models) {
+  const scopes = invoke(model, 'scopes', models);
+  forEach(scopes, (it, name) => model.addScope(name, it, { override: true }));
 }
 
 const db = {
