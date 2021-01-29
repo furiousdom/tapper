@@ -63,8 +63,8 @@ export default {
   },
   async created() {
     const { data: orderItems } = await productApi.fetch();
-    orderItems.forEach(({ id, type, liters, Brand }) => {
-      this.availableProducts.push({ id, text: `${Brand.name} ${type} ${liters}L` });
+    orderItems.forEach(({ id, type, volume, brand }) => {
+      this.availableProducts.push({ id, text: `${brand} ${type} ${volume}L` });
     });
   }
 };

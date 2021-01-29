@@ -2,7 +2,7 @@ const { Model } = require('sequelize');
 const PRODUCT_TYPES = ['KEG', 'BOTTLES'];
 
 class Product extends Model {
-  static fields({ DATE, ENUM, INTEGER }) {
+  static fields({ DATE, ENUM, FLOAT, INTEGER, STRING }) {
     return {
       createdAt: {
         type: DATE,
@@ -16,21 +16,20 @@ class Product extends Model {
         type: DATE,
         field: 'deleted_at'
       },
-      type: ENUM(PRODUCT_TYPES),
-      liters: INTEGER
+      volume: FLOAT, // TODO: Rename to pacakgeVolume
+      type: ENUM(PRODUCT_TYPES), // Rename to packageType
+      brand: STRING, // Rename to brandName?
+      quantity: INTEGER // Rename to availableQuantity
     };
   }
 
-  static associate({ Brand, Order, ProductOrder }) {
+  static associate({ Order, ProductOrder }) {
     this.belongsToMany(Order, {
       through: ProductOrder,
       foreignKey: { name: 'productId', field: 'product_id' }
     });
     this.hasMany(ProductOrder, {
       foreignKey: { name: 'productId', field: 'product_id' }
-    });
-    this.belongsTo(Brand, {
-      foreignKey: { name: 'brandId', field: 'brand_id' }
     });
   }
 }

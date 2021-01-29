@@ -1,61 +1,59 @@
-const { Brand, Order, Product, ProductOrder } = require('../common/database');
-const { CREATED, NO_CONTENT, NOT_MODIFIED, OK } = require('http-status-codes');
+const { BAD_REQUEST, CREATED, NO_CONTENT, NOT_MODIFIED, OK } = require('http-status-codes');
+const { Order, Product, ProductOrder } = require('../common/database');
+
+const ALREADY_REPORTED = 208;
 
 function getClosed({ query: { userId } }, res) {
-  const where = userId ? { userId, status: 'CLOSED' } : null;
+  if (!userId) return res.sendStatus(BAD_REQUEST);
+  const where = { userId, status: 'CLOSED' };
   const include = includeAll();
   return Order.findAll({ where, include })
     .then(orders => res.send(orders.reverse()));
 }
 
 function getOpen({ query: { userId } }, res) {
-  const where = userId ? { userId, status: ['OPEN', 'REVIEWED'] } : null;
+  if (!userId) return res.sendStatus(BAD_REQUEST);
+  const where = { userId, status: ['OPEN', 'REVIEWED'] };
   const include = includeAll();
   return Order.findOne({ where, include })
     .then(order => order ? res.send(order) : res.sendStatus(NO_CONTENT));
 }
 
-function create({ body: { userId, note, products } }, res) {
-  const where = userId ? { userId, status: 'OPEN' } : null;
-  return Order.findOne({ where })
-    .then(openOrder => {
-      if (openOrder) return res.sendStatus(208);
-      return Order.create({ status: 'OPEN', userId, note })
-        .then(order => processOrder(order, products))
-        .then(() => res.sendStatus(CREATED));
-    });
+async function create({ body: { userId, note, products } }, res) {
+  if (!userId) return res.sendStatus(BAD_REQUEST);
+  const where = { userId, status: 'OPEN' };
+  const openedOrder = await Order.findOne({ where });
+  if (openedOrder) return res.sendStatus(ALREADY_REPORTED);
+  const order = await Order.create({ status: 'OPEN', userId, note });
+  const done = await processOrder(order, products);
+  if (done) return res.status(CREATED).send(order);
 }
 
-function update(req, res) {
+async function update(req, res) {
   const { params: { id }, body: { note, products } } = req;
-  return Order.findByPk(id, { include: ProductOrder })
-    .then(async order => {
-      if (order.status !== 'OPEN') return res.sendStatus(NOT_MODIFIED);
-      await order.update({ note });
-      await ProductOrder.destroy({ where: { orderId: id } });
-      return processOrder(order, products);
-    })
-    .then(() => res.sendStatus(OK));
+  const order = await Order.findByPk(id, { include: ProductOrder });
+  if (order.status !== 'OPEN') return res.sendStatus(NOT_MODIFIED);
+  await order.update({ note });
+  await ProductOrder.destroy({ where: { orderId: id } });
+  const done = await processOrder(order, products);
+  if (done) return res.status(OK).send(done);
 }
 
-function setClosed(req, res) {
+async function setClosed(req, res) {
   const { params: { id }, body: { status } } = req;
-  return Order.findByPk(id)
-    .then(async order => {
-      if (order.status !== 'REVIEWED') return res.sendStatus(NOT_MODIFIED);
-      const { changed } = await order.update({ status });
-      return res.sendStatus(changed ? OK : NOT_MODIFIED);
-    });
+  const order = await Order.findByPk(id);
+  if (order.status !== 'REVIEWED') return res.sendStatus(NOT_MODIFIED);
+  const { changed } = await order.update({ status });
+  return res.sendStatus(changed ? OK : ALREADY_REPORTED);
 }
 
-function remove({ params: { id } }, res) {
-  return Order.findByPk(id, { include: ProductOrder })
-    .then(async order => {
-      const where = { orderId: order.id };
-      await ProductOrder.destroy({ where });
-      return order.destroy();
-    })
-    .then(() => res.sendStatus(OK));
+async function remove({ params: { id } }, res) {
+  const order = await Order.findByPk(id, { include: ProductOrder });
+  if (!order) return res.sendStatus(BAD_REQUEST);
+  const where = { orderId: order.id };
+  await ProductOrder.destroy({ where });
+  const done = await order.destroy();
+  if (done) return res.sendStatus(OK);
 }
 
 module.exports = { getClosed, getOpen, create, update, setClosed, remove };
@@ -68,27 +66,22 @@ async function processOrder(order, products) {
   return order.setProductOrders(productOrders);
 }
 
+// TODO: You can't omit available quantity until you rename it in the product.model
 function includeAll() {
-  // TODO: Maybe include brandId, as well.
-  const timestamps = [
+  const props = [
     'createdAt',
     'updatedAt',
     'deletedAt',
     'orderId',
-    'productId',
-    'availableLiters'
+    'productId'
   ];
-  const attributes = { exclude: timestamps };
+  const attributes = { exclude: props };
   return {
     model: ProductOrder,
     attributes,
     include: {
       model: Product,
-      attributes,
-      include: {
-        model: Brand,
-        attributes
-      }
+      attributes
     }
   };
 }

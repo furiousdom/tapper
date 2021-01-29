@@ -48,7 +48,7 @@ export default {
     },
     formatProducts(orderItems) {
       return orderItems.map(({ quantity, Product }) => (
-        `${quantity} ${Product.Brand.name} ${Product.liters}L ${Product.type}`
+        `${quantity} ${Product.brand} ${Product.volume}L ${Product.type}`
       ));
     }
   },

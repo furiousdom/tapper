@@ -12,14 +12,12 @@ const sequelize = new Sequelize(
 );
 
 /* eslint-disable require-sort/require-sort */
-const Brand = require('../../brand/brand.model');
 const Order = require('../../order/order.model');
 const Product = require('../../product/product.model');
 const ProductOrder = require('../../order/productOrder.model');
 const User = require('../../user/user.model');
 
 const models = {
-  Brand: defineModel(Brand),
   Order: defineModel(Order),
   Product: defineModel(Product),
   ProductOrder: defineModel(ProductOrder),
