@@ -1,5 +1,5 @@
 const { Model } = require('sequelize');
-const PRODUCT_TYPES = ['KEG', 'BOTTLES'];
+const { PRODUCT_TYPES } = require('../config/shared');
 
 class Product extends Model {
   static fields({ DATE, ENUM, FLOAT, INTEGER, STRING }) {

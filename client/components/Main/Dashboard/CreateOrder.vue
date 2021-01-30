@@ -29,8 +29,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import orderApi from '@/services/order';
+import { mapActions, mapState } from 'vuex';
 import productApi from '@/services/product';
 
 const setOrderItem = () => ({ productId: null, quantity: null });
@@ -48,10 +47,11 @@ export default {
     itemQuantities: () => [1, 2, 3, 4, 5, 6]
   },
   methods: {
+    ...mapActions('order', ['create']),
     submit() {
       const { orderItems, user: { id: userId }, note } = this;
-      return orderApi.create({ userId, note, products: orderItems })
-        .then(this.clearForm());
+      this.create({ userId, note, products: orderItems })
+        .then(() => this.clearForm());
     },
     addProduct() {
       this.orderItems.push(setOrderItem());

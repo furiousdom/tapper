@@ -1,14 +1,14 @@
 <template>
   <div>
     <v-card
-      v-for="({ id, createdAt, updatedAt, ProductOrders }, index) in orders"
+      v-for="({ id, createdAt, updatedAt, ProductOrders }, index) in deliveredOrders"
       :key="id"
       flat
       class="my-6">
       <v-row class="mx-2 ml-md-4">
         <v-col cols="2" md="2">
           <div class="caption grey-text">Order no.</div>
-          <div class="black--text pl-2">{{ orders.length - index }}</div>
+          <div class="black--text pl-2">{{ deliveredOrders.length - index }}</div>
         </v-col>
         <v-col cols="5" md="3">
           <div class="caption grey-text">Ordered on:</div>
@@ -34,15 +34,17 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex';
 import { format } from 'date-fns';
-import { mapState } from 'vuex';
-import orderApi from '@/services/order';
 
 export default {
   name: 'orders',
-  data: () => ({ orders: null }),
-  computed: mapState('auth', ['user']),
+  computed: {
+    ...mapState('auth', ['user']),
+    ...mapState('order', ['deliveredOrders'])
+  },
   methods: {
+    ...mapActions('order', ['getClosed']),
     formatDate(date) {
       return date && format(new Date(date), 'MMM do, yyyy');
     },
@@ -52,9 +54,8 @@ export default {
       ));
     }
   },
-  async mounted() {
-    const { id: userId } = this.user;
-    this.orders = await orderApi.getClosed({ userId });
+  mounted() {
+    this.getClosed({ userId: this.user.id });
   }
 };
 </script>

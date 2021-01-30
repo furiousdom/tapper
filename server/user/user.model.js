@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { Model } = require('sequelize');
 const pick = require('lodash/pick');
-const ROLES = ['USER', 'ADMIN'];
+const { ROLES } = require('../config/shared');
 
 const SALT = bcrypt.genSaltSync(auth.saltRounds);
 const encrypt = password => bcrypt.hash(password, SALT);

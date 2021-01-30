@@ -1,5 +1,5 @@
 const { Model } = require('sequelize');
-const STATUS = ['OPEN', 'REVIEWED', 'CLOSED'];
+const { ORDER_STATUS } = require('../config/shared');
 
 class Order extends Model {
   static fields({ DATE, ENUM, TEXT }) {
@@ -16,7 +16,7 @@ class Order extends Model {
         type: DATE,
         field: 'deleted_at'
       },
-      status: ENUM(STATUS),
+      status: ENUM(ORDER_STATUS),
       note: TEXT
     };
   }
