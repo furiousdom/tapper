@@ -1,15 +1,15 @@
 <template>
-  <v-card v-if="openOrder" v-model="openOrder" flat class="pb-2">
+  <v-card v-if="activeOrder" v-model="activeOrder" flat class="pb-2">
     <div class="d-flex justify-space-between">
       <v-card-subtitle class="pb-2">
-        Order Date: {{ formatDate(openOrder.createdAt) }}
+        Order Date: {{ formatDate(activeOrder.createdAt) }}
       </v-card-subtitle>
       <v-checkbox @click="markDone" :disabled="status" dense class="mt-2" />
     </div>
     <v-divider class="mx-2" />
     <v-card-subtitle class="pb-2">Beers</v-card-subtitle>
     <div
-      v-for="(item, index2) in formatOrderItems(openOrder.ProductOrders)"
+      v-for="(item, index2) in formatOrderItems(activeOrder.ProductOrders)"
       :key="index2"
       class="ml-16">
       {{ item }}
@@ -18,36 +18,33 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import { format } from 'date-fns';
 
 export default {
   name: 'active-order',
   computed: {
     ...mapState('auth', ['user']),
-    ...mapState('order', ['openOrder']),
+    ...mapGetters('order', ['activeOrder']),
     status() {
-      return this.openOrder.status !== 'REVIEWED';
+      return this.activeOrder.status !== 'Reviewed';
     }
   },
   methods: {
-    ...mapActions('order', ['getOpen', 'setClosed']),
+    ...mapActions('order', ['deliver']),
     formatDate(date) {
       return date && format(new Date(date), 'MMM do, yyyy');
     },
     formatOrderItems(orderItems) {
-      if (!orderItems) return;
-      return orderItems.map(({ quantity, Product }) => (
-        `${quantity} ${Product.brand} ${Product.volume}L ${Product.type}`
-      ));
+      return orderItems.map(({ quantity, Product }) => {
+        const { brand, packageVolume, packageType } = Product;
+        return `${quantity} ${brand} ${packageVolume}L ${packageType}`;
+      });
     },
-    async markDone() {
-      const { user: { id: userId }, openOrder: { id: orderId } } = this;
-      this.setClosed({ userId, orderId, status: 'CLOSED' });
+    markDone() {
+      const { activeOrder: { id: orderId } } = this;
+      this.deliver({ orderId, status: 'Delivered' });
     }
-  },
-  created() {
-    this.getOpen({ userId: this.user.id });
   }
 };
 </script>

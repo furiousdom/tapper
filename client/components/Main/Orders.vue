@@ -34,28 +34,25 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import { format } from 'date-fns';
 
 export default {
   name: 'orders',
   computed: {
     ...mapState('auth', ['user']),
-    ...mapState('order', ['deliveredOrders'])
+    ...mapGetters('order', ['deliveredOrders'])
   },
   methods: {
-    ...mapActions('order', ['getClosed']),
     formatDate(date) {
       return date && format(new Date(date), 'MMM do, yyyy');
     },
     formatProducts(orderItems) {
-      return orderItems.map(({ quantity, Product }) => (
-        `${quantity} ${Product.brand} ${Product.volume}L ${Product.type}`
-      ));
+      return orderItems.map(({ quantity, Product }) => {
+        const { brand, packageVolume, packageType } = Product;
+        return `${quantity} ${brand} ${packageVolume}L ${packageType}`;
+      });
     }
-  },
-  mounted() {
-    this.getClosed({ userId: this.user.id });
   }
 };
 </script>

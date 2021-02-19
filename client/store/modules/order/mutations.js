@@ -1,19 +1,28 @@
-export const setOpenOrder = (state, order) => {
-  state.openOrder = order;
+export const setOrder = (state, order) => {
+  state.order = order;
 };
 
-export const unsetOpenOrder = state => {
-  state.openOrder = null;
+export const unsetOrder = state => {
+  state.order = null;
 };
 
-export const setDeliveredOrders = (state, orders) => {
-  state.deliveredOrders = orders;
+export const setItems = (state, orders) => {
+  state.items = orders;
 };
 
-export const unsetDeliveredOrders = state => {
-  state.deliveredOrders = null;
+export const unsetItems = state => {
+  state.items = null;
+};
+
+export const addItem = (state, order) => {
+  state.items.unshift(order);
+};
+
+export const deliver = (state, updatedOrder) => {
+  const activeOrder = state.items.find(order => order.id === updatedOrder.id);
+  activeOrder.status = updatedOrder.status;
 };
 
 export const unsetAllOrders = state => {
-  Object.assign(state, { openOrder: null, deliveredOrders: null });
+  Object.assign(state, { order: null, items: null });
 };

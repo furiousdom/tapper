@@ -1,5 +1,5 @@
 const { Model } = require('sequelize');
-const { ORDER_STATUS } = require('../config/shared');
+const { ORDER_STATUS } = require('../../common/config');
 
 class Order extends Model {
   static fields({ DATE, ENUM, TEXT }) {
@@ -35,11 +35,9 @@ class Order extends Model {
   }
 
   static scopes({ ProductOrder, Product }) {
-    // TODO: If you rename quantity to availableQuantity on product model
-    // you can unify all the excludes into a single array up here!
     const timestamps = ['createdAt', 'updatedAt', 'deletedAt'];
     return {
-      includeEverything: {
+      withAll: {
         include: {
           model: ProductOrder,
           attributes: {

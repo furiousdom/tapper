@@ -1,33 +1,16 @@
-import { CREATED, OK } from 'http-status-codes';
 import api from '@/services/order';
 
-export const getClosed = ({ commit }, params) => {
-  return api.getClosed(params)
-    .then(orders => commit('setDeliveredOrders', orders));
-};
-
-export const getOpen = ({ commit }, params) => {
-  return api.getOpen(params)
-    .then(order => commit('setOpenOrder', order));
+export const fetch = ({ commit }, params) => {
+  return api.fetch(params)
+    .then(orders => commit('setItems', orders));
 };
 
 export const create = ({ commit }, params) => {
   return api.create(params)
-    .then(response => {
-      const { status, data: order } = response;
-      if (status === CREATED) commit('setOpenOrder', order);
-    });
+    .then(order => commit('addItem', order));
 };
 
-export const setClosed = ({ commit }, { userId, ...params }) => {
-  return api.setClosed(params)
-    .then(response => {
-      const { status } = response;
-      if (status === OK) {
-        commit('unsetOpenOrder');
-        return api.getClosed({ userId })
-          .then(orders => commit('setDeliveredOrders', orders));
-      }
-      return response;
-    });
+export const deliver = ({ commit }, params) => {
+  return api.deliver(params)
+    .then(order => commit('deliver', order));
 };
