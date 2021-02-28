@@ -1,3 +1,4 @@
+const { createError } = require('../common/errors');
 const ctrl = require('./order.controller');
 const express = require('express');
 const { NOT_FOUND } = require('http-status-codes');
@@ -16,7 +17,7 @@ router
 
 async function getOrder(req, res, next, orderId) {
   const order = await Order.findByPk(orderId);
-  if (!order) return res.sendStatus(NOT_FOUND);
+  if (!order) return createError(NOT_FOUND, 'Order doesn\'t exist.');
   req.order = order;
   next();
 }

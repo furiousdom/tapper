@@ -37,12 +37,8 @@ export default {
     error: null
   }),
   computed: {
-    textType() {
-      return this.show ? 'text' : 'password';
-    },
-    eyeIcon() {
-      return this.show ? 'mdi-eye' : 'mdi-eye-off';
-    }
+    textType: vm => vm.show ? 'text' : 'password',
+    eyeIcon: vm => vm.show ? 'mdi-eye' : 'mdi-eye-off'
   },
   methods: {
     ...mapActions('auth', ['login']),

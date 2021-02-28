@@ -9,10 +9,10 @@
     <v-divider class="mx-2" />
     <v-card-subtitle class="pb-2">Beers</v-card-subtitle>
     <div
-      v-for="(item, index2) in formatOrderItems(activeOrder.ProductOrders)"
-      :key="index2"
+      v-for="item in activeOrder.ProductOrders"
+      :key="item.Product.id"
       class="ml-16">
-      {{ item }}
+      {{ formatProduct(item) }}
     </div>
   </v-card>
 </template>
@@ -26,20 +26,14 @@ export default {
   computed: {
     ...mapState('auth', ['user']),
     ...mapGetters('order', ['activeOrder']),
-    status() {
-      return this.activeOrder.status !== 'Reviewed';
-    }
+    status: vm => vm.activeOrder.status !== 'Reviewed'
   },
   methods: {
     ...mapActions('order', ['deliver']),
-    formatDate(date) {
-      return date && format(new Date(date), 'MMM do, yyyy');
-    },
-    formatOrderItems(orderItems) {
-      return orderItems.map(({ quantity, Product }) => {
-        const { brand, packageVolume, packageType } = Product;
-        return `${quantity} ${brand} ${packageVolume}L ${packageType}`;
-      });
+    formatDate: date => date && format(new Date(date), 'MMM do, yyyy'),
+    formatProduct({ quantity, Product }) {
+      const { brand, packageVolume, packageType } = Product;
+      return `${quantity} ${brand} ${packageVolume}L ${packageType}`;
     },
     markDone() {
       const { activeOrder: { id: orderId } } = this;

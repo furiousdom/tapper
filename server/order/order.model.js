@@ -1,5 +1,6 @@
 const { Model } = require('sequelize');
-const { ORDER_STATUS } = require('../../common/config');
+const { OrderStatus } = require('../../common/config');
+const values = require('lodash/values');
 
 class Order extends Model {
   static fields({ DATE, ENUM, TEXT }) {
@@ -16,7 +17,7 @@ class Order extends Model {
         type: DATE,
         field: 'deleted_at'
       },
-      status: ENUM(ORDER_STATUS),
+      status: ENUM(values(OrderStatus)),
       note: TEXT
     };
   }
@@ -55,6 +56,10 @@ class Order extends Model {
         }
       }
     };
+  }
+
+  static withAll() {
+    return this.scope('withAll');
   }
 }
 

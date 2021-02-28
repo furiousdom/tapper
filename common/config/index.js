@@ -1,5 +1,9 @@
+const OrderStatus = require('./orderStatus');
+const ProductType = require('./productType');
+const Role = require('./role');
+
 module.exports = {
-  ROLES: ['User', 'Admin'],
-  ORDER_STATUS: ['Active', 'Reviewed', 'Delivered'],
-  PRODUCT_TYPES: ['Keg', 'Bottles']
+  Role,
+  OrderStatus,
+  ProductType
 };

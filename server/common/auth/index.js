@@ -22,7 +22,7 @@ const jwtOptions = {
 };
 
 passport.use(new JwtStrategy(jwtOptions, ({ id }, done) => {
-  return User.findOne({ id })
+  return User.findOne({ where: { id } })
     .then(user => done(null, user || false))
     .catch(err => done(err));
 }));

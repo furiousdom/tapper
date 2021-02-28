@@ -1,3 +1,4 @@
+require('express-async-errors');
 const auth = require('./common/auth');
 const express = require('express');
 const order = require('./order');

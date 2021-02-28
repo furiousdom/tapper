@@ -1,45 +1,45 @@
 const { BAD_REQUEST, CREATED, NOT_MODIFIED, OK } = require('http-status-codes');
 const { Order, ProductOrder } = require('../common/database');
-const { ORDER_STATUS: [Active, Reviewed] } = require('../../common/config');
+const { OrderStatus: { ACTIVE, REVIEWED } } = require('../../common/config');
 
 const ALREADY_REPORTED = 208;
 
 function fetch({ query: { userId } }, res) {
   if (!userId) return res.sendStatus(BAD_REQUEST);
   const where = { userId };
-  return Order.scope('withAll').findAll({ where })
+  return Order.withAll().findAll({ where })
     .then(orders => res.send(orders.reverse()));
 }
 
 async function create({ body: { userId, note, products } }, res) {
   if (!userId) return res.sendStatus(BAD_REQUEST);
-  const where = { userId, status: Active };
+  const where = { userId, status: ACTIVE };
   const activeOrder = await Order.findOne({ where });
   if (activeOrder) return res.sendStatus(ALREADY_REPORTED);
-  const order = await Order.create({ status: Active, userId, note });
+  const order = await Order.create({ status: ACTIVE, userId, note });
   const done = await processOrder(order, products);
   if (done) {
-    const final = await Order.scope('withAll').findByPk(order.id);
+    const final = await Order.withAll().findByPk(order.id);
     return res.status(CREATED).send(final);
   }
 }
 
 async function update({ order, body }, res) {
   const { note, products } = body;
-  if (order.status !== Active) return res.sendStatus(NOT_MODIFIED);
+  if (order.status !== ACTIVE) return res.sendStatus(NOT_MODIFIED);
   await order.update({ note });
   await ProductOrder.destroy({ where: { orderId: order.id } });
   const done = await processOrder(order, products);
   if (done) {
-    const final = await Order.scope('withAll').findByPk(order.id);
+    const final = await Order.withAll().findByPk(order.id);
     return res.status(OK).send(final);
   }
 }
 
 async function deliver({ order, body: { status } }, res) {
-  if (order.status !== Reviewed) return res.sendStatus(NOT_MODIFIED);
+  if (order.status !== REVIEWED) return res.sendStatus(NOT_MODIFIED);
   await order.update({ status });
-  return res.send(await Order.scope('withAll').findByPk(order.id));
+  return res.send(await Order.withAll().findByPk(order.id));
 }
 
 async function remove({ params: { id } }, res) {
