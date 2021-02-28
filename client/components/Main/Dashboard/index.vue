@@ -10,11 +10,17 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex';
 import ActiveOrder from './ActiveOrder';
 import CreateOrder from './CreateOrder';
 
 export default {
   name: 'dashboard',
+  computed: mapState('auth', ['user']),
+  methods: mapActions('order', { getOrders: 'fetch' }),
+  created() {
+    this.getOrders({ userId: this.user.id });
+  },
   components: { ActiveOrder, CreateOrder }
 };
 </script>

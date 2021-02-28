@@ -9,8 +9,8 @@
       <v-text-field
         v-model="password"
         @click:append="show = !show"
-        :type="textType"
-        :append-icon="eyeIcon"
+        :type="options.type"
+        :append-icon="options.icon"
         label="Password" outlined />
       <div class="d-flex justify-space-between">
         <v-btn
@@ -37,11 +37,10 @@ export default {
     error: null
   }),
   computed: {
-    textType() {
-      return this.show ? 'text' : 'password';
-    },
-    eyeIcon() {
-      return this.show ? 'mdi-eye' : 'mdi-eye-off';
+    options() {
+      return this.show
+        ? { type: 'text', icon: 'mdi-eye' }
+        : { type: 'password', icon: 'mdi-eye-off' };
     }
   },
   methods: {

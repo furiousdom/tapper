@@ -1,56 +1,44 @@
 <template>
-  <v-card v-if="latestOrder" v-model="latestOrder" flat class="pb-2">
+  <v-card v-if="activeOrder" v-model="activeOrder" flat class="pb-2">
     <div class="d-flex justify-space-between">
       <v-card-subtitle class="pb-2">
-        Order Date: {{ formatDate(latestOrder.createdAt) }}
+        Order Date: {{ formatDate(activeOrder.createdAt) }}
       </v-card-subtitle>
       <v-checkbox @click="markDone" :disabled="status" dense class="mt-2" />
     </div>
     <v-divider class="mx-2" />
     <v-card-subtitle class="pb-2">Beers</v-card-subtitle>
     <div
-      v-for="(item, index2) in formatOrderItems(latestOrder.ProductOrders)"
-      :key="index2"
+      v-for="item in activeOrder.ProductOrders"
+      :key="item.Product.id"
       class="ml-16">
-      {{ item }}
+      {{ formatProduct(item) }}
     </div>
   </v-card>
 </template>
 
 <script>
+import { mapActions, mapGetters, mapState } from 'vuex';
 import { format } from 'date-fns';
-import { mapState } from 'vuex';
-import { OK } from 'http-status-codes';
-import orderApi from '@/services/order';
 
 export default {
   name: 'active-order',
-  data: () => ({ latestOrder: null }),
   computed: {
     ...mapState('auth', ['user']),
-    status() {
-      return this.latestOrder.status !== 'REVIEWED';
-    }
+    ...mapGetters('order', ['activeOrder']),
+    status: vm => vm.activeOrder.status !== 'Reviewed'
   },
   methods: {
-    formatDate(date) {
-      return date && format(new Date(date), 'MMM do, yyyy');
+    ...mapActions('order', ['deliver']),
+    formatDate: date => date && format(new Date(date), 'MMM do, yyyy'),
+    formatProduct({ quantity, Product }) {
+      const { brand, packageVolume, packageType } = Product;
+      return `${quantity} ${brand} ${packageVolume}L ${packageType}`;
     },
-    formatOrderItems(orderItems) {
-      return orderItems.map(({ quantity, Product }) => (
-        `${quantity} ${Product.brand} ${Product.volume}L ${Product.type}`
-      ));
-    },
-    async markDone() {
-      if (!this.latestOrder) return;
-      const params = { orderId: this.latestOrder.id, status: 'CLOSED' };
-      const { status } = await orderApi.setClosed(params);
-      if (status === OK) this.latestOrder = null;
+    markDone() {
+      const { activeOrder: { id: orderId } } = this;
+      this.deliver({ orderId, status: 'Delivered' });
     }
-  },
-  async created() {
-    this.latestOrder = this.latestOrder ? this.latestOrder
-      : await orderApi.getOpen({ userId: this.user.id });
   }
 };
 </script>
