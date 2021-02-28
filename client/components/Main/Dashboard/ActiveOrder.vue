@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { DELIVERED, REVIEWED } from '@/../common/config/orderStatus';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import { format } from 'date-fns';
 
@@ -26,7 +27,7 @@ export default {
   computed: {
     ...mapState('auth', ['user']),
     ...mapGetters('order', ['activeOrder']),
-    status: vm => vm.activeOrder.status !== 'Reviewed'
+    status: vm => vm.activeOrder.status !== REVIEWED
   },
   methods: {
     ...mapActions('order', ['deliver']),
@@ -37,7 +38,7 @@ export default {
     },
     markDone() {
       const { activeOrder: { id: orderId } } = this;
-      this.deliver({ orderId, status: 'Delivered' });
+      this.deliver({ orderId, status: DELIVERED });
     }
   }
 };
