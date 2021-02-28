@@ -63,11 +63,10 @@ export default {
     loginError: null
   }),
   computed: {
-    textType() {
-      return this.show ? 'text' : 'password';
-    },
-    eyeIcon() {
-      return this.show ? 'mdi-eye' : 'mdi-eye-off';
+    options() {
+      return this.show
+        ? { type: 'text', icon: 'mdi-eye' }
+        : { type: 'password', icon: 'mdi-eye-off' };
     }
   },
   methods: {

@@ -22,10 +22,10 @@
           <v-divider class="hidden-md-and-up" />
           <div class="caption grey-text">Beers:</div>
           <div
-            v-for="(item, i) in formatProducts(ProductOrders)"
-            :key="i"
+            v-for="item in ProductOrders"
+            :key="item.Product.id"
             class="pl-16">
-            {{ item }}
+            {{ formatProduct(item) }}
           </div>
         </v-col>
       </v-row>
@@ -34,28 +34,21 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import { format } from 'date-fns';
 
 export default {
   name: 'orders',
   computed: {
     ...mapState('auth', ['user']),
-    ...mapState('order', ['deliveredOrders'])
+    ...mapGetters('order', ['deliveredOrders'])
   },
   methods: {
-    ...mapActions('order', ['getClosed']),
-    formatDate(date) {
-      return date && format(new Date(date), 'MMM do, yyyy');
-    },
-    formatProducts(orderItems) {
-      return orderItems.map(({ quantity, Product }) => (
-        `${quantity} ${Product.brand} ${Product.volume}L ${Product.type}`
-      ));
+    formatDate: date => date && format(new Date(date), 'MMM do, yyyy'),
+    formatProduct({ quantity, Product }) {
+      const { brand, packageVolume, packageType } = Product;
+      return `${quantity} ${brand} ${packageVolume}L ${packageType}`;
     }
-  },
-  mounted() {
-    this.getClosed({ userId: this.user.id });
   }
 };
 </script>

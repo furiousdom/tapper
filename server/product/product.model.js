@@ -1,5 +1,6 @@
 const { Model } = require('sequelize');
-const { PRODUCT_TYPES } = require('../config/shared');
+const { ProductType } = require('../../common/config');
+const values = require('lodash/values');
 
 class Product extends Model {
   static fields({ DATE, ENUM, FLOAT, INTEGER, STRING }) {
@@ -16,10 +17,19 @@ class Product extends Model {
         type: DATE,
         field: 'deleted_at'
       },
-      volume: FLOAT, // TODO: Rename to pacakgeVolume
-      type: ENUM(PRODUCT_TYPES), // Rename to packageType
-      brand: STRING, // Rename to brandName?
-      quantity: INTEGER // Rename to availableQuantity
+      packageVolume: {
+        type: FLOAT,
+        field: 'package_volume'
+      },
+      packageType: {
+        type: ENUM(values(ProductType)),
+        field: 'package_type'
+      },
+      brand: STRING,
+      availableQuantity: {
+        type: INTEGER,
+        field: 'available_quantity'
+      }
     };
   }
 

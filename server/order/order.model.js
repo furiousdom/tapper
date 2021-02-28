@@ -1,5 +1,6 @@
 const { Model } = require('sequelize');
-const { ORDER_STATUS } = require('../config/shared');
+const { OrderStatus } = require('../../common/config');
+const values = require('lodash/values');
 
 class Order extends Model {
   static fields({ DATE, ENUM, TEXT }) {
@@ -16,7 +17,7 @@ class Order extends Model {
         type: DATE,
         field: 'deleted_at'
       },
-      status: ENUM(ORDER_STATUS),
+      status: ENUM(values(OrderStatus)),
       note: TEXT
     };
   }
@@ -35,11 +36,9 @@ class Order extends Model {
   }
 
   static scopes({ ProductOrder, Product }) {
-    // TODO: If you rename quantity to availableQuantity on product model
-    // you can unify all the excludes into a single array up here!
     const timestamps = ['createdAt', 'updatedAt', 'deletedAt'];
     return {
-      includeEverything: {
+      withAll: {
         include: {
           model: ProductOrder,
           attributes: {
@@ -57,6 +56,10 @@ class Order extends Model {
         }
       }
     };
+  }
+
+  static withAll() {
+    return this.scope('withAll');
   }
 }
 
