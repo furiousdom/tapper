@@ -3,7 +3,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { Model } = require('sequelize');
 const pick = require('lodash/pick');
-const ROLES = ['USER', 'ADMIN'];
+const { Role } = require('../../common/config');
+const values = require('lodash/values');
 
 const SALT = bcrypt.genSaltSync(auth.saltRounds);
 const encrypt = password => bcrypt.hash(password, SALT);
@@ -27,7 +28,7 @@ class User extends Model {
         }
       },
       password: STRING,
-      role: ENUM(ROLES),
+      role: ENUM(values(Role)),
       name: STRING,
       address: STRING,
       contactName: {

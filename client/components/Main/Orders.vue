@@ -1,14 +1,14 @@
 <template>
   <div>
     <v-card
-      v-for="({ id, createdAt, updatedAt, ProductOrders }, index) in orders"
+      v-for="({ id, createdAt, updatedAt, ProductOrders }, index) in deliveredOrders"
       :key="id"
       flat
       class="my-6">
       <v-row class="mx-2 ml-md-4">
         <v-col cols="2" md="2">
           <div class="caption grey-text">Order no.</div>
-          <div class="black--text pl-2">{{ orders.length - index }}</div>
+          <div class="black--text pl-2">{{ deliveredOrders.length - index }}</div>
         </v-col>
         <v-col cols="5" md="3">
           <div class="caption grey-text">Ordered on:</div>
@@ -22,10 +22,10 @@
           <v-divider class="hidden-md-and-up" />
           <div class="caption grey-text">Beers:</div>
           <div
-            v-for="(item, i) in formatProducts(ProductOrders)"
-            :key="i"
+            v-for="item in ProductOrders"
+            :key="item.Product.id"
             class="pl-16">
-            {{ item }}
+            {{ formatProduct(item) }}
           </div>
         </v-col>
       </v-row>
@@ -34,27 +34,21 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from 'vuex';
 import { format } from 'date-fns';
-import { mapState } from 'vuex';
-import orderApi from '@/services/order';
 
 export default {
   name: 'orders',
-  data: () => ({ orders: null }),
-  computed: mapState('auth', ['user']),
-  methods: {
-    formatDate(date) {
-      return date && format(new Date(date), 'MMM do, yyyy');
-    },
-    formatProducts(orderItems) {
-      return orderItems.map(({ quantity, Product }) => (
-        `${quantity} ${Product.Brand.name} ${Product.liters}L ${Product.type}`
-      ));
-    }
+  computed: {
+    ...mapState('auth', ['user']),
+    ...mapGetters('order', ['deliveredOrders'])
   },
-  async mounted() {
-    const { id: userId } = this.user;
-    this.orders = await orderApi.getClosed({ userId });
+  methods: {
+    formatDate: date => date && format(new Date(date), 'MMM do, yyyy'),
+    formatProduct({ quantity, Product }) {
+      const { brand, packageVolume, packageType } = Product;
+      return `${quantity} ${brand} ${packageVolume}L ${packageType}`;
+    }
   }
 };
 </script>

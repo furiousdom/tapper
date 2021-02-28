@@ -4,6 +4,7 @@ const AuthError = require('passport/lib/errors/authenticationerror');
 const config = require('./config');
 const cors = require('cors');
 const express = require('express');
+const { HttpError } = require('http-errors');
 const router = require('./router');
 const { sequelize } = require('./common/database');
 // eslint-disable-next-line require-sort/require-sort
@@ -18,16 +19,11 @@ app.use(auth.initialize());
 app.use(config.apiPath, router);
 
 app.use((err, req, res, next) => {
-  if (!err.status || err.status === INTERNAL_SERVER_ERROR) {
-    console.error(err);
-    res.status(INTERNAL_SERVER_ERROR).end();
-    return;
-  } else if (err instanceof AuthError) {
-    res.status(err.status).send(err.message);
-    return;
+  if ((err instanceof HttpError) || (err instanceof AuthError)) {
+    return res.status(err.status).send(err.message);
   }
-  const { status, message } = err;
-  res.status(status).json({ error: { status, message } });
+  res.status(INTERNAL_SERVER_ERROR).end();
+  console.log({ req, err }, '🚨  Internal Error:', err.message);
 });
 
 app.use((req, res, next) => res.status(NOT_FOUND).end());
