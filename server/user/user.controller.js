@@ -1,6 +1,11 @@
 const { CREATED } = require('http-status-codes');
-const msg = require('../config/messages');
 const { User } = require('../common/database');
+
+const msg = {
+  fillFields: 'Please fill all fields.',
+  failedMatch: 'Passwords don\'t match.',
+  shortPass: 'Password should be at least 8 characters.'
+};
 
 async function register(req, res) {
   const { errors, body } = req;

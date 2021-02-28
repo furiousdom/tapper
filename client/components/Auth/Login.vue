@@ -31,8 +31,8 @@
             v-model="password"
             @click:append="show = !show"
             :error-messages="errors"
-            :type="textType"
-            :append-icon="eyeIcon"
+            :type="options.type"
+            :append-icon="options.icon"
             label="Password" outlined />
         </validation-provider>
         <div class="d-flex justify-space-between">

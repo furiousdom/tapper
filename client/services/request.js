@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const apiPath = process.env.API_PATH || '/api';
-const authScheme = process.env.AUTH_JWT_SCHEME || 'Bearer';
+const apiPath = process.env.API_PATH;
+const authScheme = process.env.AUTH_JWT_SCHEME;
 
 const config = {
   headers: { 'Content-Type': 'application/json' },
