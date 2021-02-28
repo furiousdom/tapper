@@ -1,9 +1,10 @@
 const { Model } = require('sequelize');
+const { OrderStatus } = require('../../common/config');
+const values = require('lodash/values');
 
 class Order extends Model {
-  static fields({ BOOLEAN, DATE }) {
+  static fields({ DATE, ENUM, TEXT }) {
     return {
-      delivered: BOOLEAN,
       createdAt: {
         type: DATE,
         field: 'created_at'
@@ -15,7 +16,9 @@ class Order extends Model {
       deletedAt: {
         type: DATE,
         field: 'deleted_at'
-      }
+      },
+      status: ENUM(values(OrderStatus)),
+      note: TEXT
     };
   }
 
@@ -30,6 +33,33 @@ class Order extends Model {
     this.belongsTo(User, {
       foreignKey: { name: 'userId', field: 'user_id' }
     });
+  }
+
+  static scopes({ ProductOrder, Product }) {
+    const timestamps = ['createdAt', 'updatedAt', 'deletedAt'];
+    return {
+      withAll: {
+        include: {
+          model: ProductOrder,
+          attributes: {
+            exclude: ['orderId', 'productId', ...timestamps]
+          },
+          include: {
+            model: Product,
+            attributes: {
+              exclude: ['quantity', ...timestamps]
+            }
+          }
+        },
+        attributes: {
+          exclude: ['userId']
+        }
+      }
+    };
+  }
+
+  static withAll() {
+    return this.scope('withAll');
   }
 }
 

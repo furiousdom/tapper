@@ -1,71 +1,57 @@
-const { Brand, Order, Product, ProductOrder } = require('../shared/database');
-const status = require('http-status-codes');
+const { BAD_REQUEST, CREATED, NOT_MODIFIED, OK } = require('http-status-codes');
+const { Order, ProductOrder } = require('../common/database');
+const { OrderStatus: { ACTIVE, REVIEWED } } = require('../../common/config');
+
+const ALREADY_REPORTED = 208;
 
 function fetch({ query: { userId } }, res) {
-  const where = userId ? { userId } : null;
-  const include = {
-    model: ProductOrder,
-    include: {
-      model: Product,
-      include: {
-        model: Brand,
-        attributes: { exclude: ['availableLiters'] }
-      }
-    }
-  };
-  return Order.findAll({ where, include })
-    .then(orders => res.send(orders))
-    .catch(err => res.status(status.BAD_REQUEST).send(err));
+  if (!userId) return res.sendStatus(BAD_REQUEST);
+  const where = { userId };
+  return Order.withAll().findAll({ where })
+    .then(orders => res.send(orders.reverse()));
 }
 
-function fetchOne({ query: { userId } }, res) {
-  const where = userId ? { userId } : null;
-  const include = {
-    model: ProductOrder,
-    include: {
-      model: Product,
-      include: {
-        model: Brand,
-        attributes: { exclude: ['availableLiters'] }
-      }
-    }
-  };
-  return Order.findOne({ where, include })
-    .then(order => res.send(order))
-    .catch(err => res.status(status.BAD_REQUEST).send(err));
+async function create({ body: { userId, note, products } }, res) {
+  if (!userId) return res.sendStatus(BAD_REQUEST);
+  const where = { userId, status: ACTIVE };
+  const activeOrder = await Order.findOne({ where });
+  if (activeOrder) return res.sendStatus(ALREADY_REPORTED);
+  const order = await Order.create({ status: ACTIVE, userId, note });
+  const done = await processOrder(order, products);
+  if (done) {
+    const final = await Order.withAll().findByPk(order.id);
+    return res.status(CREATED).send(final);
+  }
 }
 
-function create({ body: { userId, products } }, res) {
-  return Order.create({ delivered: false, userId })
-    .then(order => processOrder(order, products))
-    .then(() => res.sendStatus(status.CREATED))
-    .catch(err => res.status(status.BAD_REQUEST).send(err));
+async function update({ order, body }, res) {
+  const { note, products } = body;
+  if (order.status !== ACTIVE) return res.sendStatus(NOT_MODIFIED);
+  await order.update({ note });
+  await ProductOrder.destroy({ where: { orderId: order.id } });
+  const done = await processOrder(order, products);
+  if (done) {
+    const final = await Order.withAll().findByPk(order.id);
+    return res.status(OK).send(final);
+  }
 }
 
-function update(req, res) {
-  const { params: { id }, body: { delivered, products } } = req;
-  return Order.findByPk(id, { include: ProductOrder })
-    .then(async order => {
-      await order.update({ delivered });
-      await ProductOrder.destroy({ where: { orderId: id } });
-      return processOrder(order, products);
-    })
-    .then(() => res.sendStatus(status.OK))
-    .catch(err => res.status(status.BAD_REQUEST).send(err));
+async function deliver({ order, body: { status } }, res) {
+  if (order.status !== REVIEWED) return res.sendStatus(NOT_MODIFIED);
+  await order.update({ status });
+  return res.send(await Order.withAll().findByPk(order.id));
 }
 
-function remove({ params: { id } }, res) {
-  return Order.findByPk(id, { include: ProductOrder })
-    .then(async order => {
-      const where = { orderId: order.id };
-      await ProductOrder.destroy({ where });
-      return order.destroy();
-    })
-    .then(() => res.sendStatus(status.OK))
-    .catch(err => res.status(status.BAD_REQUEST).send(err));
+async function remove({ params: { id } }, res) {
+  const order = await Order.findByPk(id, { include: ProductOrder });
+  if (!order) return res.sendStatus(BAD_REQUEST);
+  const where = { orderId: order.id };
+  await ProductOrder.destroy({ where });
+  const done = await order.destroy();
+  if (done) return res.sendStatus(OK);
 }
 
-module.exports = { fetch, fetchOne, create, update, remove };
+module.exports = { fetch, create, update, deliver, remove };
 
 async function processOrder(order, products) {
   const entries = products.map(({ productId, quantity }) => ({

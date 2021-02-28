@@ -1,71 +1,54 @@
 <template>
   <div>
-    <v-row
-      v-for="({ id, createdAt, updatedAt, delivered, ProductOrders }, index) in orders"
+    <v-card
+      v-for="({ id, createdAt, updatedAt, ProductOrders }, index) in deliveredOrders"
       :key="id"
-      no-gutters>
-      <v-col cols="2" lg="2">
-        <v-card tile flat class="pa-2">
-          <div class="caption grey-text">Order</div>
-          <div>{{ index + 1 }}</div>
-        </v-card>
-      </v-col>
-      <v-col cols="5" lg="3">
-        <v-card tile flat class="pa-2">
-          <div class="caption grey-text">Date ordered</div>
-          <div>{{ formatDate(createdAt) }}</div>
-        </v-card>
-      </v-col>
-      <v-col cols="5" lg="3">
-        <v-card tile flat class="pa-2">
-          <div class="caption grey-text">Date delivered</div>
-          <div v-if="delivered">{{ formatDate(updatedAt) }}</div>
-        </v-card>
-      </v-col>
-      <v-divider />
-      <v-col cols="12" lg="4">
-        <v-card tile flat class="pa-2">
-          <div class="caption grey-text">Beers</div>
+      flat
+      class="my-6">
+      <v-row class="mx-2 ml-md-4">
+        <v-col cols="2" md="2">
+          <div class="caption grey-text">Order no.</div>
+          <div class="black--text pl-2">{{ deliveredOrders.length - index }}</div>
+        </v-col>
+        <v-col cols="5" md="3">
+          <div class="caption grey-text">Ordered on:</div>
+          <div class="pl-2">{{ formatDate(createdAt) }}</div>
+        </v-col>
+        <v-col cols="5" md="3">
+          <div class="caption grey-text">Delivered on:</div>
+          <div class="pl-2">{{ formatDate(updatedAt) }}</div>
+        </v-col>
+        <v-col cols="12" md="4">
+          <v-divider class="hidden-md-and-up" />
+          <div class="caption grey-text">Beers:</div>
           <div
-            v-for="(item, i) in formatOrderItems(ProductOrders)"
-            :key="i"
-            class="ml-16">
-            {{ item }}
+            v-for="item in ProductOrders"
+            :key="item.Product.id"
+            class="pl-16">
+            {{ formatProduct(item) }}
           </div>
-        </v-card>
-      </v-col>
-    </v-row>
+        </v-col>
+      </v-row>
+    </v-card>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapState } from 'vuex';
 import { format } from 'date-fns';
-import { mapState } from 'vuex';
-import orderApi from '@/services/order';
 
 export default {
   name: 'orders',
-  data: () => ({ orders: null }),
-  computed: mapState('auth', ['user']),
-  methods: {
-    formatDate(date) {
-      return date && format(new Date(date), 'MMM do, yyyy');
-    },
-    formatOrderItems(orderItems) {
-      return orderItems.map(({ quantity, Product }) => (
-        `${quantity} ${Product.Brand.name} ${Product.liters}L ${Product.type}`
-      ));
-    }
+  computed: {
+    ...mapState('auth', ['user']),
+    ...mapGetters('order', ['deliveredOrders'])
   },
-  async mounted() {
-    const { id: userId } = this.user;
-    this.orders = await orderApi.fetch({ userId });
+  methods: {
+    formatDate: date => date && format(new Date(date), 'MMM do, yyyy'),
+    formatProduct({ quantity, Product }) {
+      const { brand, packageVolume, packageType } = Product;
+      return `${quantity} ${brand} ${packageVolume}L ${packageType}`;
+    }
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.row {
-  background: #fff;
-}
-</style>

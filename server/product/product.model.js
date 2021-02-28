@@ -1,11 +1,10 @@
 const { Model } = require('sequelize');
-const PRODUCT_TYPES = ['KEG', 'BOTTLES'];
+const { ProductType } = require('../../common/config');
+const values = require('lodash/values');
 
 class Product extends Model {
-  static fields({ DATE, ENUM, INTEGER }) {
+  static fields({ DATE, ENUM, FLOAT, INTEGER, STRING }) {
     return {
-      type: ENUM(PRODUCT_TYPES),
-      liters: INTEGER,
       createdAt: {
         type: DATE,
         field: 'created_at'
@@ -17,20 +16,30 @@ class Product extends Model {
       deletedAt: {
         type: DATE,
         field: 'deleted_at'
+      },
+      packageVolume: {
+        type: FLOAT,
+        field: 'package_volume'
+      },
+      packageType: {
+        type: ENUM(values(ProductType)),
+        field: 'package_type'
+      },
+      brand: STRING,
+      availableQuantity: {
+        type: INTEGER,
+        field: 'available_quantity'
       }
     };
   }
 
-  static associate({ Brand, Order, ProductOrder }) {
+  static associate({ Order, ProductOrder }) {
     this.belongsToMany(Order, {
       through: ProductOrder,
       foreignKey: { name: 'productId', field: 'product_id' }
     });
     this.hasMany(ProductOrder, {
       foreignKey: { name: 'productId', field: 'product_id' }
-    });
-    this.belongsTo(Brand, {
-      foreignKey: { name: 'brandId', field: 'brand_id' }
     });
   }
 }

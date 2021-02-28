@@ -1,4 +1,4 @@
-const config = require('../../config/config');
+const config = require('../../config');
 const forEach = require('lodash/forEach');
 const Hooks = require('./hooks');
 const invoke = require('lodash/invoke');
@@ -12,14 +12,12 @@ const sequelize = new Sequelize(
 );
 
 /* eslint-disable require-sort/require-sort */
-const Brand = require('../../brand/brand.model');
 const Order = require('../../order/order.model');
 const Product = require('../../product/product.model');
 const ProductOrder = require('../../order/productOrder.model');
 const User = require('../../user/user.model');
 
 const models = {
-  Brand: defineModel(Brand),
   Order: defineModel(Order),
   Product: defineModel(Product),
   ProductOrder: defineModel(ProductOrder),
@@ -35,11 +33,17 @@ function defineModel(Model, connection = sequelize) {
 forEach(models, model => {
   invoke(model, 'associate', models);
   addHooks(model, Hooks);
+  addScopes(model, models);
 });
 
 function addHooks(model, Hooks) {
   const hooks = invoke(model, 'hooks', Hooks);
   forEach(hooks, (it, type) => model.addHook(type, it));
+}
+
+function addScopes(model, models) {
+  const scopes = invoke(model, 'scopes', models);
+  forEach(scopes, (it, name) => model.addScope(name, it, { override: true }));
 }
 
 const db = {

@@ -1,8 +1,12 @@
+const { auth } = require('../config');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const { Model } = require('sequelize');
-const PRODUCT_TYPES = ['USER', 'ADMIN'];
+const pick = require('lodash/pick');
+const { Role } = require('../../common/config');
+const values = require('lodash/values');
 
-const SALT = bcrypt.genSaltSync(10);
+const SALT = bcrypt.genSaltSync(auth.saltRounds);
 const encrypt = password => bcrypt.hash(password, SALT);
 
 function encryptPassword(user) {
@@ -24,7 +28,7 @@ class User extends Model {
         }
       },
       password: STRING,
-      role: ENUM(PRODUCT_TYPES),
+      role: ENUM(values(Role)),
       name: STRING,
       address: STRING,
       contactName: {
@@ -67,6 +71,11 @@ class User extends Model {
   authenticate(password) {
     return bcrypt.compare(password, this.password)
       .then(isMatch => isMatch ? this : false);
+  }
+
+  createToken(options = {}) {
+    const payload = pick(this, ['id', 'email']);
+    return jwt.sign(payload, auth.secret, options);
   }
 }
 

@@ -1,35 +1,19 @@
-const config = require('../config/config');
-const jwt = require('jsonwebtoken');
+const { CREATED } = require('http-status-codes');
 const msg = require('../config/messages');
-const status = require('http-status-codes');
-const { User } = require('../shared/database');
+const { User } = require('../common/database');
 
 async function register(req, res) {
   const { errors, body } = req;
   if (errors.length) return res.send({ errors, body });
-  try {
-    const user = await User.create(body);
-    if (user) res.sendStatus(status.CREATED);
-  } catch (err) {
-    res.status(status.BAD_REQUEST).send(err);
-  }
+  const user = await User.create(body);
+  if (user) res.sendStatus(CREATED);
 }
 
-async function login(req, res) {
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ where: { email } });
-    if (!user) return res.status(status.FORBIDDEN).send({ error: msg.loginFailed });
-    const isPasswordValid = await user.authenticate(password);
-    if (!isPasswordValid) return res.status(status.FORBIDDEN).send({ error: msg.wrongPassword });
-    const userJson = user.toJSON();
-    res.send({
-      user: userJson,
-      token: jwtSignUser(userJson)
-    });
-  } catch (err) {
-    res.status(status.INTERNAL_SERVER_ERROR).send({ error: msg.serverError });
-  }
+function login({ user }, res) {
+  const ONE_WEEK = 60 * 60 * 24 * 7;
+  const token = user.createToken({ expiresIn: ONE_WEEK });
+  const profile = { id: user.id, email: user.email };
+  res.send({ token, user: profile });
 }
 
 module.exports = { errorHandler, login, register };
@@ -42,11 +26,4 @@ function errorHandler(req, _, next) {
   if (password !== rePassword) errors.push(msg.failedMatch);
   req.errors = errors;
   next();
-}
-
-function jwtSignUser(user) {
-  const ONE_WEEK = 60 * 60 * 24 * 7;
-  return jwt.sign(user, config.authentication.jwtSecret, {
-    expiresIn: ONE_WEEK
-  });
 }

@@ -1,4 +1,16 @@
+# Editors
 .vscode
-dist
-public
+
+# Dependencies
 node_modules
+
+# Configuration
+.env
+
+# Build artifacts
+public
+dist
+build
+
+# General
+.DS_Store

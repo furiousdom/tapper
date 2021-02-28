@@ -1,3 +1,4 @@
+const config = require('./server/config');
 const path = require('path');
 
 module.exports = {
@@ -6,9 +7,11 @@ module.exports = {
   ],
   outputDir: path.resolve(__dirname, './dist'),
   devServer: {
+    // Override using: `npm run dev:client -- --port <number>`
+    port: process.env.CLIENT_PORT || 8080,
     proxy: {
       '/api': {
-        target: 'http://localhost:5000'
+        target: `http://${config.ip}:${config.port}`
       }
     }
   },

@@ -3,7 +3,6 @@ const { Model } = require('sequelize');
 class ProductOrder extends Model {
   static fields({ DATE, INTEGER }) {
     return {
-      quantity: INTEGER,
       createdAt: {
         type: DATE,
         field: 'created_at'
@@ -15,7 +14,8 @@ class ProductOrder extends Model {
       deletedAt: {
         type: DATE,
         field: 'deleted_at'
-      }
+      },
+      quantity: INTEGER
     };
   }
 

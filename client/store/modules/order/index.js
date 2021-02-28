@@ -1,14 +1,16 @@
 import * as actions from './actions';
+import * as getters from './getters';
 import * as mutations from './mutations';
 
 const state = {
-  user: JSON.parse(localStorage.getItem('user')) || null,
-  token: localStorage.getItem('token') || null
+  order: {},
+  items: []
 };
 
 export default {
   namespaced: true,
   state,
   actions,
+  getters,
   mutations
 };

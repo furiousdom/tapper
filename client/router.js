@@ -44,8 +44,8 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, _from, next) => {
-  const user = get(store.state, 'auth.user');
-  const isNotAuthenticated = to.matched.some(it => it.meta.auth) && !user;
+  const token = get(store.state, 'auth.token');
+  const isNotAuthenticated = to.matched.some(it => it.meta.auth) && !token;
   return isNotAuthenticated ? next({ name: 'login' }) : next();
 });
 

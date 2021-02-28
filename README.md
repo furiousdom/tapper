@@ -3,7 +3,7 @@
     <img src="./client/assets/tapb-logo.svg" alt="Logo" width="60" height="60">
   </a>
   <h1>Tapper</h1>
-  <p><i>Web application for product order management.</i></p>
+  <p><i>Wholesale order management web application for Tap B brewery.</i></p>
 </div>
 
 <div align="center">

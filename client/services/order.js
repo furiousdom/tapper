@@ -3,8 +3,7 @@ import path from 'path';
 
 const urls = {
   root: 'order',
-  fetchOne: () => path.join(urls.root, 'fetch-one'),
-  create: () => path.join(urls.root, 'create')
+  deliver: id => path.join(urls.root, String(id), 'deliver')
 };
 
 async function fetch(params = {}) {
@@ -12,13 +11,14 @@ async function fetch(params = {}) {
   return data.map(order => ({ ...order, createdAt: new Date(order.createdAt) }));
 }
 
-async function fetchOne(params = {}) {
-  const { data } = await api.get(urls.fetchOne(), { params });
-  return { ...data, createdAt: new Date(data.createdAt) };
+async function create(params = {}) {
+  const { data } = await api.post(urls.root, params);
+  return data ? { ...data, createdAt: new Date(data.createdAt) } : null;
 }
 
-function create(params) {
-  return api.post(urls.create(), params);
+async function deliver({ orderId, ...params }) {
+  const { data } = await api.patch(urls.deliver(orderId), params);
+  return data ? { ...data, createdAt: new Date(data.createdAt) } : null;
 }
 
-export default { create, fetch, fetchOne };
+export default { fetch, create, deliver };
