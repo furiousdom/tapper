@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = require('http-status-codes');
 const auth = require('./common/auth');
 const AuthError = require('passport/lib/errors/authenticationerror');
@@ -23,7 +24,7 @@ app.use((err, req, res, next) => {
     return res.status(err.status).send(err.message);
   }
   res.status(INTERNAL_SERVER_ERROR).end();
-  console.log({ req, err }, '🚨  Internal Error:', err.message);
+  console.error({ req, err }, '🚨  Internal Error:', err.message);
 });
 
 app.use((req, res, next) => res.status(NOT_FOUND).end());

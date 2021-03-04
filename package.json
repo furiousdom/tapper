@@ -27,6 +27,7 @@
     "core-js": "^3.8.2",
     "cors": "^2.8.5",
     "date-fns": "^2.16.1",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "http-status-codes": "^1.4.0",
@@ -39,6 +40,7 @@
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.22.3",
+    "vee-validate": "^3.4.5",
     "vue": "^2.6.12",
     "vue-router": "^3.4.9",
     "vuetify": "^2.4.2",
@@ -74,5 +76,10 @@
     "vue-cli-plugin-vuetify": "^2.0.9",
     "vue-template-compiler": "^2.6.12",
     "vuetify-loader": "^1.6.0"
+  },
+  "vuePlugins": {
+    "service": [
+      "./build/plugins/vue-cli/envs"
+    ]
   }
 }

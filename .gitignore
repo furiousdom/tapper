@@ -8,9 +8,7 @@ node_modules
 .env
 
 # Build artifacts
-public
 dist
-build
 
 # General
 .DS_Store
